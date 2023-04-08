@@ -108,7 +108,7 @@ end
 """
     get_space_index(::Val{:F10adj}, jd_utc::Number) -> Float64
 
-Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W/(M²⋅Hz)] for the Julian day
+Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
 function get_space_index(::Val{:F10adj}, jd_utc::Number)
@@ -122,7 +122,7 @@ end
 """
     get_space_index(::Val{:F10obs}, jd_utc::Number) -> Float64
 
-Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W/(M²⋅Hz)] for the Julian day
+Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
 function get_space_index(::Val{:F10obs}, jd_utc::Number)

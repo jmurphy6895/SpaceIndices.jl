@@ -9,7 +9,7 @@
 
 # Download the file in `url` to `filename` using the scratch space `key`. If
 # `force_download` is `true`, it will always download the file. Otherwise, it will avoid
-# downloading it again if the file exists and a time period less than `redownload_period`
+# downloading it again if the file exists and a time period less than `expiry_period`
 # has passed.
 #
 # The instant in which the file was obtained is written to a file with the prefix
@@ -19,7 +19,7 @@ function _download_file(
     key::String,
     filename::String;
     force_download::Bool = false,
-    redownload_period::DatePeriod = Day(7)
+    expiry_period::DatePeriod = Day(7)
 )
     # Get the scratch space where the files are located.
     cache_dir          = @get_scratch!(key)
@@ -44,10 +44,10 @@ function _download_file(
             tokens    = split(str, '\n')
             timestamp = tokens |> first |> DateTime
 
-            if now() >= timestamp + redownload_period
+            if now() >= timestamp + expiry_period
                 download_file = true
             else
-                @debug "We found an file that is less than $redownload_period old (timestamp = $timestamp). Hence, we will use it."
+                @debug "We found a file that is less than $expiry_period old (timestamp = $timestamp). Hence, we will use it."
             end
         catch
             # If any error occurred, we will download the data again.

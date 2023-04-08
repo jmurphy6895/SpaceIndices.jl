@@ -7,7 +7,7 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export get_url, get_filename, get_redownload_period, get_space_index
+export get_expiry_period, get_filename, get_space_index, get_url
 
 ############################################################################################
 #                                          Macros
@@ -25,12 +25,14 @@ macro register(T)
 
     ex = quote
         @OptionalData(
-            @data_handler($T),
+            SpaceIndices.@data_handler($T),
             $T,
             "The space index SpaceIndices." * $space_index_name * " was not initialized yet."
         )
 
-        push!(_SPACE_FILES, ($T, $op_data_handler))
+        push!(SpaceIndices._SPACE_FILES, ($T, $op_data_handler))
+
+        return nothing
     end
 
     return esc(ex)
@@ -54,12 +56,12 @@ Get the data handler for the space index file structure `T`.
 macro object(T)
     space_index_name = string(T)
     ex = quote
-        isavailable(@data_handler($T)) || error(
+        isavailable(SpaceIndices.@data_handler($T)) || error(
             """
             The space index SpaceIndices.$($space_index_name) was not initialized yet.
             See the function init_space_indices() for more information."""
         )
-        get(@data_handler($T))
+        get(SpaceIndices.@data_handler($T))
     end
 
 
@@ -84,17 +86,19 @@ file path.
 function fetch_space_file(::Type{T}; force_download::Bool = false) where T<:SpaceIndexFile
     url = get_url(T)
     filename = get_filename(T)
-    redownload_period = get_redownload_period(T)
-
-    return _download_file(url, string(T), filename)
+    expiry_period = get_expiry_period(T)
+    return _download_file(url, string(T), filename; force_download, expiry_period)
 end
 
 """
-    get_url(::Type{T}) where T<:SpaceIndexFile -> String
+    get_expiry_period(::Type{T}) where T<:SpaceIndexFile -> DatePeriod
 
-Return the URL to obtain the space index file `T`.
+Return the expiry period for the space index file `T`. The remote file will always be
+downloaded again if a time larger than this period has passed after the last download.
+
+If this function is not defined for `T`, the default expiry period of 7 days is used.
 """
-get_url
+get_expiry_period(::Type{T}) where T<:SpaceIndexFile = Day(7)
 
 """
     get_filename(::Type{T}) where T<:SpaceIndexFile -> String
@@ -104,12 +108,11 @@ Return the filename for the space index file `T`.
 get_filename
 
 """
-    get_redownload_period(::Type{T}) where T<:SpaceIndexFile -> DatePeriod
+    get_url(::Type{T}) where T<:SpaceIndexFile -> String
 
-Return the redownload period for the space index file `T`. The remote file will always be
-downloaded again if a time larger than this period has passed after the last download.
+Return the URL to obtain the space index file `T`.
 """
-get_redownload_period(::Type{T}) where T<:SpaceIndexFile = Day(7)
+get_url
 
 """
     get_space_index(::Val{:index}, jd::Number; kwargs...) -> Number

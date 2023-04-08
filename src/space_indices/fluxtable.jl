@@ -37,7 +37,7 @@ end
 
 get_filename(::Type{Fluxtable}) = "fluxtable.txt"
 
-get_redownload_period(::Type{Fluxtable}) = Day(1)
+get_expiry_period(::Type{Fluxtable}) = Day(1)
 
 function parse_space_file(::Type{Fluxtable}, filepath::String)
     # Allocate raw data.

@@ -69,9 +69,9 @@ where the space `index` for the Julian day `jd` will be returned.
 ## Optional API Function
 
 ```julia
-get_redownload_period(::Type{T}) where T<:SpaceIndexFile -> DatePeriod
+get_expiry_period(::Type{T}) where T<:SpaceIndexFile -> DatePeriod
 ```
 
-This function must return the re-download period for the space index file `T`. The remote
-file will always be downloaded again if a time larger than this period has passed after the
-last download. If this function is not defined, it returns `Day(7)` by default.
+This function must return the expiry period for the space index file `T`. The remote file
+will always be downloaded again if a time larger than this period has passed after the last
+download. If this function is not defined, it returns `Day(7)` by default.

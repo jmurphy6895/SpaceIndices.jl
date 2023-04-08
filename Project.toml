@@ -1,0 +1,25 @@
+name = "SpaceIndices"
+uuid = "5a540a4e-639f-452a-b107-23ea09ed4d36"
+license = "MIT"
+desc = "A package to fetch and parse space indices."
+authors = ["Ronan Arraes Jardim Chagas <ronisbr@gmail.com>"]
+version = "0.0.1"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Interpolations = "a98d9a8b-a2ab-59e6-89dd-64a1c18fca59"
+OptionalData = "fbd9d27c-2d1c-5c1c-99f2-7497d746985d"
+Scratch = "6c6a2e73-6563-6170-7368-637461726353"
+
+[compat]
+Interpolations = "0.14"
+OptionalData = "1"
+Scratch = "1"
+julia = "1.6"
+
+[extras]
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "Logging"]

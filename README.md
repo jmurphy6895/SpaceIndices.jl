@@ -9,23 +9,25 @@ This package allows to automatically fetch and parse space indices.
 
 The files supported in this version are:
 
-| File            | Expiry period      | Information                                                                 |
-|:----------------|:-------------------|:----------------------------------------------------------------------------|
-| `fluxtable.txt` | 1 day              | It contains the F10.7 flux data (observed and adjusted).                    |
-| `SOLFSMY.txt`   | 1 day              | This files contains the indices necessary for the JB2008 atmospheric model. |
+| File            | Expiry period      | Information                                                 |
+|:----------------|:-------------------|:------------------------------------------------------------|
+| `DTCFILE.txt`   | 1 day              | Exospheric temperature variation caused by the Dst index.   |
+| `fluxtable.txt` | 1 day              | F10.7 flux data (observed and adjusted).                    |
+| `SOLFSMY.txt`   | 1 day              | Indices necessary for the JB2008 atmospheric model.         |
 
 Those files provide the following indices:
 
-| Space file      | Index    | Description                                             | Unit                 |
-|-----------------|----------|---------------------------------------------------------|----------------------|
-| `fluxtable.txt` | `F10obs` | Observed F10.7 (10.7-cm solar flux)                     | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `F10adj` | Adjusted F10.7 (10.7-cm solar flux)                     | 10⁻²² W / (M² ⋅ Hz)] |
-| `SOLFSMY.txt`   | `S10`    | EUV index (26-34 nm) scaled to F10.7                    | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `M10`    | MG2 index scaled to F10.7.                              | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `Y10`    | Solar X-ray & Lya index scaled to F10.7                 | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `S81a`   | 81-day averaged EUV index (26-34 nm) scaled to F10.7    | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `M81a`   | 81-day averaged MG2 index scaled to F10.7.              | 10⁻²² W / (M² ⋅ Hz)  |
-|                 | `Y81a`   | 81-day averaged solar X-ray & Lya index scaled to F10.7 | 10⁻²² W / (M² ⋅ Hz)  |
+| Space file      | Index    | Description                                               | Unit               |
+|-----------------|----------|-----------------------------------------------------------|--------------------|
+| `DTCFILE.txt`   | `DTC`    | Exospheric temperature variation caused by the Dst index. | K                  |
+| `fluxtable.txt` | `F10obs` | Observed F10.7 (10.7-cm solar flux)                       | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `F10adj` | Adjusted F10.7 (10.7-cm solar flux)                       | 10⁻²² W / (M² ⋅ Hz) |
+| `SOLFSMY.txt`   | `S10`    | EUV index (26-34 nm) scaled to F10.7                      | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `M10`    | MG2 index scaled to F10.7.                                | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `Y10`    | Solar X-ray & Lya index scaled to F10.7                   | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `S81a`   | 81-day averaged EUV index (26-34 nm) scaled to F10.7      | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `M81a`   | 81-day averaged MG2 index scaled to F10.7.                | 10⁻²² W / (M² ⋅ Hz) |
+|                 | `Y81a`   | 81-day averaged solar X-ray & Lya index scaled to F10.7   | 10⁻²² W / (M² ⋅ Hz) |
 
 ## Installation
 

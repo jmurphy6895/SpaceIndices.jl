@@ -5,10 +5,11 @@ This package allows to automatically fetch and parse space indices.
 
 The files supported in this version are:
 
-| File            | Expiry period      | Information                                                                 |
-|:----------------|:-------------------|:----------------------------------------------------------------------------|
-| `fluxtable.txt` | 1 day              | It contains the F10.7 flux data (observed and adjusted).                    |
-| `SOLFSMY.txt`   | 1 day              | This files contains the indices necessary for the JB2008 atmospheric model. |
+| File            | Expiry period      | Information                                                 |
+|:----------------|:-------------------|:------------------------------------------------------------|
+| `DTCFILE.txt`   | 1 day              | Exospheric temperature variation caused by the Dst index.   |
+| `fluxtable.txt` | 1 day              | F10.7 flux data (observed and adjusted).                    |
+| `SOLFSMY.txt`   | 1 day              | Indices necessary for the JB2008 atmospheric model.         |
 
 ## Installation
 

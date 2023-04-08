@@ -13,18 +13,27 @@
     init_space_indices()
 
     # Test if the structures were initialized.
+    @test SpaceIndices._OPDATA_DTCFILE.data   isa SpaceIndices.Dtcfile
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
     @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
 
     # Destroy everything to test the individual initialization.
     destroy_space_indices()
 
+    init_space_index(SpaceIndices.Dtcfile)
+    @test SpaceIndices._OPDATA_DTCFILE.data isa SpaceIndices.Dtcfile
+    @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
+    @test SpaceIndices._OPDATA_SOLFSMY.data isa Nothing
+    destroy_space_indices()
+
     init_space_index(SpaceIndices.Fluxtable)
+    @test SpaceIndices._OPDATA_DTCFILE.data   isa Nothing
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
     @test SpaceIndices._OPDATA_SOLFSMY.data   isa Nothing
     destroy_space_indices()
 
     init_space_index(SpaceIndices.Solfsmy)
+    @test SpaceIndices._OPDATA_DTCFILE.data   isa Nothing
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
     @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
     destroy_space_indices()
@@ -33,6 +42,7 @@
     # ======================================================================================
 
     init_space_indices(; blocklist = [SpaceIndices.Fluxtable])
+    @test SpaceIndices._OPDATA_DTCFILE.data isa SpaceIndices.Dtcfile
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
     @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
 end

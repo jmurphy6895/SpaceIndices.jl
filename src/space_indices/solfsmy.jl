@@ -3,7 +3,7 @@
 # Description
 # ==========================================================================================
 #
-#   Space index file: solfsmy.txt
+#   Space index file: SOLFSMY.txt
 #   Default URL: http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT
 #
 #   This file contains the following indices:

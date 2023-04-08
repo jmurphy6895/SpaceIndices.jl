@@ -22,6 +22,14 @@
 
     # Test if the structures were initialized.
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
+
+    # Blocklist
+    # ======================================================================================
+
+    destroy_space_indices()
+
+    init_space_indices(; blocklist = [SpaceIndices.Fluxtable])
+    @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
 end
 
 @testset "Errors Related To Unitialized Space Indices" begin

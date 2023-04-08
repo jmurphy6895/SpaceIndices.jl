@@ -3,7 +3,7 @@
 # Description
 # ==========================================================================================
 #
-#   Space index file: DTCFILE.txt
+#   Space index file: DTCFILE.TXT
 #   Default URL: http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT
 #
 #   This file stores the temperature variation `ΔTc` caused by the `Dst`. This information

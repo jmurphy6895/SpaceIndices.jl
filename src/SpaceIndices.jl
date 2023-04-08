@@ -32,5 +32,6 @@ include("./download.jl")
 include("./initialize.jl")
 
 include("./space_indices/fluxtable.jl")
+include("./space_indices/solfsmy.jl")
 
 end # module SpaceIndices

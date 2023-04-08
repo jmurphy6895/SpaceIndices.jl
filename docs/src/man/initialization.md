@@ -20,6 +20,7 @@ the file again.
 ```julia-repl
 julia> init_space_indices()
 [ Info: Downloading the file 'fluxtable.txt' from 'ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt'...
+[ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
 ```
 
 If the user does not want to download a set of space indices, they can pass them in the

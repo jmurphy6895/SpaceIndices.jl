@@ -47,7 +47,7 @@ function _download_file(
             if now() >= timestamp + redownload_period
                 download_file = true
             else
-                @debug "We found an file that is less than $outdate_period old (timestamp = $timestamp). Hence, we will use it."
+                @debug "We found an file that is less than $redownload_period old (timestamp = $timestamp). Hence, we will use it."
             end
         catch
             # If any error occurred, we will download the data again.

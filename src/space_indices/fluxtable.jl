@@ -103,7 +103,7 @@ function parse_space_file(::Type{Fluxtable}, filepath::String)
     return Fluxtable(itp_f107_obs, itp_f107_adj)
 end
 
-@register_space_file(Fluxtable)
+@register Fluxtable
 
 """
     get_space_index(::Val{:F10adj}, jd_utc::Number) -> Float64
@@ -112,7 +112,7 @@ Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W/(M²⋅Hz)] for t
 `jd_utc`.
 """
 function get_space_index(::Val{:F10adj}, jd_utc::Number)
-    obj = @space_file_object(Fluxtable)
+    obj = @object(Fluxtable)
     itp = obj.itp_f107_adj
 
     @check_timespan(itp, jd_utc)
@@ -126,7 +126,7 @@ Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W/(M²⋅Hz)] for t
 `jd_utc`.
 """
 function get_space_index(::Val{:F10obs}, jd_utc::Number)
-    obj = @space_file_object(Fluxtable)
+    obj = @object(Fluxtable)
     itp = obj.itp_f107_adj
 
     @check_timespan(itp, jd_utc)

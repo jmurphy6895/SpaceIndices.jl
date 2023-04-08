@@ -7,7 +7,6 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export @register_space_file, @space_file_data_handler, @space_file_object
 export get_url, get_filename, get_redownload_period, get_space_index
 
 ############################################################################################
@@ -15,18 +14,18 @@ export get_url, get_filename, get_redownload_period, get_space_index
 ############################################################################################
 
 """
-    @register_space_file(T)
+    @register(T)
 
-Register the space file `T`. This macro push the data into the global vector of space files
-and also creates the optinal data handler for the processed structure.
+Register the the space index file structure `T`. This macro push the data into the global
+vector of space files and also creates the optinal data handler for the processed structure.
 """
-macro register_space_file(T)
+macro register(T)
     op_data_handler = "_" * "OPDATA_" * uppercase(string(T)) |> Symbol
     space_index_name = string(T)
 
     ex = quote
         @OptionalData(
-            @space_file_data_handler($T),
+            @data_handler($T),
             $T,
             "The space index SpaceIndices." * $space_index_name * " was not initialized yet."
         )
@@ -38,29 +37,29 @@ macro register_space_file(T)
 end
 
 """
-    @space_file_data_handler(T)
+    @data_handler(T)
 
-Get the variable with the optional data handler for space file `T`.
+Get the variable with the optional data handler for space index file structure `T`.
 """
-macro space_file_data_handler(T)
+macro data_handler(T)
     op_data_handle = "_" * "OPDATA_" * uppercase(string(T)) |> Symbol
     return :($op_data_handle) |> esc
 end
 
 """
-    @space_file_object(T)
+    @object(T)
 
-Get the data handler for the space file `T`.
+Get the data handler for the space index file structure `T`.
 """
-macro space_file_object(T)
+macro object(T)
     space_index_name = string(T)
     ex = quote
-        isavailable(@space_file_data_handler($T)) || error(
+        isavailable(@data_handler($T)) || error(
             """
             The space index SpaceIndices.$($space_index_name) was not initialized yet.
             See the function init_space_indices() for more information."""
         )
-        get(@space_file_data_handler($T))
+        get(@data_handler($T))
     end
 
 

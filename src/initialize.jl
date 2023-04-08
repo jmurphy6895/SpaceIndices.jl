@@ -10,15 +10,20 @@
 export init_space_index, init_space_indices
 
 """
-    init_space_index(::Type{T}) where T<:SpaceIndexFile -> Nothing
+    init_space_index(::Type{T}; kwargs...) where T<:SpaceIndexFile
 
 Initialize the space index `T`.
 
 This function will download the remote file associated to the space index `T` if it does
 not exist or if the redownload period has been passed. Aftward, it will parse the file and
 populate the object handler to be accesses by the function [`get_space_index`](@ref).
+
+# Keywords
+
+- `force_download::Bool`: If `true`, the space file will be downloaded regardless of its
+    timestamp. (**Default** = `false`)
 """
-function init_space_index(::Type{T}) where T<:SpaceIndexFile
+function init_space_index(::Type{T}; force_download::Bool = false) where T<:SpaceIndexFile
     id = findfirst(x -> first(x) === T, _SPACE_FILES)
     isnothing(id) && throw(ArgumentError("The space file $T is not registered!"))
 
@@ -26,7 +31,7 @@ function init_space_index(::Type{T}) where T<:SpaceIndexFile
     handler = _SPACE_FILES[id] |> last
 
     # Fetch the space file, if necessary, and parse it.
-    filepath = fetch_space_file(T)
+    filepath = fetch_space_file(T; force_download)
     obj = parse_space_file(T, filepath)
     push!(handler, obj)
 

@@ -12,6 +12,8 @@ struct LeapSeconds <: SpaceIndexFile
     leap_seconds::Vector{Float64}
 end
 
+struct TempSpaceIndexFile <: SpaceIndexFile end
+
 SpaceIndices.get_url(::Type{LeapSeconds}) = "https://ronanarraes.com/space-indices/leap_seconds.csv"
 SpaceIndices.get_filename(::Type{LeapSeconds}) = "leap_seconds.csv"
 SpaceIndices.get_expiry_period(::Type{LeapSeconds}) = Day(365)
@@ -67,6 +69,9 @@ SpaceIndices.@register LeapSeconds
     @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
     @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
     @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+
+    # Test the default expiry period.
+    @test get_expiry_period(TempSpaceIndexFile) == Day(7)
 end
 
 @testset "Expiry date" begin
@@ -118,4 +123,14 @@ end
     @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
     @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
     @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+
+    # If the timestamp file is invalid, we should download the file again.
+    open(file_timestamp, "w") do f
+        write(f, "THIS CANNOT BE CONVERTED TO DATATIME")
+    end
+
+    @test_logs (
+        :info,
+        "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
+    ) match_mode = :any init_space_index(LeapSeconds)
 end

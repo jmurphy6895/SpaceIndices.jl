@@ -2,8 +2,10 @@ module SpaceIndices
 
 using Dates
 using Interpolations
-using OptionalData
+using Reexport
 using Scratch
+
+@reexport using OptionalData
 
 ############################################################################################
 #                                          Types

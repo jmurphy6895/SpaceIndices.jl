@@ -13,38 +13,28 @@
     init_space_index_sets()
 
     # Test if the structures were initialized.
-    @test SpaceIndices._OPDATA_DTCFILE.data   isa SpaceIndices.Dtcfile
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
-    @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
+    @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
 
     # Destroy everything to test the individual initialization.
     destroy_space_index_sets()
 
-    init_space_index_set(SpaceIndices.Dtcfile)
-    @test SpaceIndices._OPDATA_DTCFILE.data isa SpaceIndices.Dtcfile
-    @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
-    @test SpaceIndices._OPDATA_SOLFSMY.data isa Nothing
-    destroy_space_index_sets()
-
     init_space_index_set(SpaceIndices.Fluxtable)
-    @test SpaceIndices._OPDATA_DTCFILE.data   isa Nothing
+    @test SpaceIndices._OPDATA_JB2008.data   isa Nothing
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
-    @test SpaceIndices._OPDATA_SOLFSMY.data   isa Nothing
     destroy_space_index_sets()
 
-    init_space_index_set(SpaceIndices.Solfsmy)
-    @test SpaceIndices._OPDATA_DTCFILE.data   isa Nothing
+    init_space_index_set(SpaceIndices.JB2008)
+    @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
-    @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
     destroy_space_index_sets()
 
     # Blocklist
     # ======================================================================================
 
     init_space_index_sets(; blocklist = [SpaceIndices.Fluxtable])
-    @test SpaceIndices._OPDATA_DTCFILE.data isa SpaceIndices.Dtcfile
+    @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
-    @test SpaceIndices._OPDATA_SOLFSMY.data   isa SpaceIndices.Solfsmy
 end
 
 @testset "Errors Related To Unitialized Space Indices" begin

@@ -31,8 +31,7 @@ include("./destroy.jl")
 include("./download.jl")
 include("./initialize.jl")
 
-include("./space_indices/dtcfile.jl")
-include("./space_indices/fluxtable.jl")
-include("./space_indices/solfsmy.jl")
+include("./space_index_sets/fluxtable.jl")
+include("./space_index_sets/jb2008.jl")
 
 end # module SpaceIndices

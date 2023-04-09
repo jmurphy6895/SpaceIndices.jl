@@ -7,20 +7,6 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-@testset "Dtcfile" begin
-    init_space_index_set(SpaceIndices.Dtcfile)
-    dt = DateTime(2020, 6, 19)
-
-    r = space_index(Val(:DTC), dt)
-    @test r ≈ 24
-end
-
-@testset "Dtcfile [ERRORS]" begin
-    # The data starts on 1997-01-01.
-    dt = DateTime(1996, 12, 31)
-    @test_throws ArgumentError space_index(Val(:DTC), dt)
-end
-
 @testset "Fluxtable" begin
     init_space_index_set(SpaceIndices.Fluxtable)
     dt = DateTime(2020, 6, 19)
@@ -39,10 +25,12 @@ end
     @test_throws ArgumentError space_index(Val(:F10adj), dt)
 end
 
-@testset "Solfsmy" begin
-    init_space_index_set(SpaceIndices.Solfsmy)
-
+@testset "JB2008" begin
+    init_space_index_set(SpaceIndices.JB2008)
     dt = DateTime(2020, 6, 19)
+
+    r = space_index(Val(:DTC), dt)
+    @test r ≈ 24
 
     r = space_index(Val(:S10), dt)
     @test r ≈ 57.7
@@ -63,10 +51,11 @@ end
     @test r ≈ 62.7
 end
 
-@testset "Solfsmy [ERRORS]" begin
+@testset "JB2008 [ERRORS]" begin
     # The data starts on 1997-01-01.
     dt = DateTime(1996, 12, 31)
 
+    @test_throws ArgumentError space_index(Val(:DTC), dt)
     @test_throws ArgumentError space_index(Val(:S10),  dt)
     @test_throws ArgumentError space_index(Val(:S81a), dt)
     @test_throws ArgumentError space_index(Val(:M10),  dt)

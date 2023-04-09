@@ -7,23 +7,27 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-struct LeapSeconds <: SpaceIndexFile
+# Custom Space Index Set
+# ==========================================================================================
+#
+# We create here a custom space index set to obtain GPS leap seconds. The purpose is to test
+# if one can use the API to define custom space indices.
+
+struct LeapSeconds <: SpaceIndexSet
     jd::Vector{Float64}
     leap_seconds::Vector{Float64}
 end
 
-struct TempSpaceIndexFile <: SpaceIndexFile end
+SpaceIndices.urls(::Type{LeapSeconds}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.expiry_periods(::Type{LeapSeconds}) = [Day(365)]
 
-SpaceIndices.get_url(::Type{LeapSeconds}) = "https://ronanarraes.com/space-indices/leap_seconds.csv"
-SpaceIndices.get_filename(::Type{LeapSeconds}) = "leap_seconds.csv"
-SpaceIndices.get_expiry_period(::Type{LeapSeconds}) = Day(365)
-
-function SpaceIndices.parse_space_file(::Type{LeapSeconds}, filepath::String)
+function SpaceIndices.parse_files(::Type{LeapSeconds}, filepaths::Vector{String})
+    filepath = first(filepaths)
     raw_data, ~ = readdlm(filepath, ';'; header = true)
     return LeapSeconds(raw_data[:, 1], raw_data[:, 2])
 end
 
-function SpaceIndices.get_space_index(::Val{:LeapSeconds}, jd_utc::Number)
+function SpaceIndices.space_index(::Val{:LeapSeconds}, jd_utc::Number)
     obj = SpaceIndices.@object(LeapSeconds)
     id = findfirst(>=(jd_utc), obj.jd)
 
@@ -44,15 +48,15 @@ SpaceIndices.@register LeapSeconds
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any init_space_index(LeapSeconds)
+    ) match_mode = :any init_space_index_set(LeapSeconds)
 
     # Test some values.
-    @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+    @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
+    @test space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
+    @test space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
 
     # Delete all objects.
-    destroy_space_indices()
+    destroy_space_index_sets()
 
     # Obtain the timestamp for the following tests.
     cache_dir      = get_scratch!(SpaceIndices, "LeapSeconds")
@@ -63,15 +67,12 @@ SpaceIndices.@register LeapSeconds
     @test_logs (
         :debug,
         "We found a file that is less than 365 days old (timestamp = $timestamp). Hence, we will use it."
-    ) min_level = Logging.Debug match_mode = :any init_space_index(LeapSeconds)
+    ) min_level = Logging.Debug match_mode = :any init_space_index_set(LeapSeconds)
 
     # Test the some data.
-    @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
-
-    # Test the default expiry period.
-    @test get_expiry_period(TempSpaceIndexFile) == Day(7)
+    @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
+    @test space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
+    @test space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
 end
 
 @testset "Expiry date" begin
@@ -89,12 +90,12 @@ end
     @test_logs (
         :debug,
         "We found a file that is less than 365 days old (timestamp = $new_timestamp). Hence, we will use it."
-    ) min_level = Logging.Debug match_mode = :any init_space_index(LeapSeconds)
+    ) min_level = Logging.Debug match_mode = :any init_space_index_set(LeapSeconds)
 
     # Test the some data.
-    @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+    @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
+    @test space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
+    @test space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
 
     # Now we change the timestamp to be 365 days old. In this case, the file should be
     # downloaded again.
@@ -106,23 +107,23 @@ end
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any init_space_index(LeapSeconds)
+    ) match_mode = :any init_space_index_set(LeapSeconds)
 
     # Test the some data.
-    @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+    @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
+    @test space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
+    @test space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
 
     # If we set `force_download = true`, the file must be downloads.
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any init_space_index(LeapSeconds, force_download = true)
+    ) match_mode = :any init_space_index_set(LeapSeconds, force_download = true)
 
     # Test the some data.
-    @test get_space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
-    @test get_space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
+    @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
+    @test space_index(Val(:LeapSeconds), DateTime(1979, 1, 1)) == 18.0
+    @test space_index(Val(:LeapSeconds), DateTime(1980, 1, 1)) == 19.0
 
     # If the timestamp file is invalid, we should download the file again.
     open(file_timestamp, "w") do f
@@ -132,5 +133,36 @@ end
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any init_space_index(LeapSeconds)
+    ) match_mode = :any init_space_index_set(LeapSeconds)
+end
+
+# Dummy Space Index Set
+# ==========================================================================================
+#
+# This dummy space index set is used only to test if the optional API function `filenames`
+# is working properly.
+
+struct DummySet <: SpaceIndexSet
+end
+
+SpaceIndices.urls(::Type{DummySet}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.expiry_periods(::Type{DummySet}) = [Day(365)]
+SpaceIndices.filenames(::Type{DummySet}) = ["dummy.csv"]
+SpaceIndices.parse_files(::Type{DummySet}, filepaths::Vector{String}) = DummySet()
+
+SpaceIndices.@register DummySet
+
+@testset "Optional API Functions" begin
+    # Make sure the scratch space is clean.
+    delete_scratch!(SpaceIndices, "DummySet")
+
+    @test_logs (
+        :info,
+        "Downloading the file 'dummy.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
+    ) match_mode = :any init_space_index_set(DummySet)
+
+    # Check if the file exits.
+    cache_dir = get_scratch!(SpaceIndices, "DummySet")
+    filepath  = joinpath(cache_dir, "dummy.csv")
+    @test isfile(filepath) == true
 end

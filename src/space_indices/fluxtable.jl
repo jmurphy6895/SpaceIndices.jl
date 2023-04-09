@@ -22,7 +22,7 @@ const _FluxtableItpType = Interpolations.GriddedInterpolation{
     Tuple{Array{Float64,1}}
 }
 
-struct Fluxtable <: SpaceIndexFile
+struct Fluxtable <: SpaceIndexSet
     itp_f107_obs::_FluxtableItpType
     itp_f107_adj::_FluxtableItpType
 end
@@ -31,15 +31,16 @@ end
 #                                           API
 ############################################################################################
 
-function get_url(::Type{Fluxtable})
-    return "ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt"
+function urls(::Type{Fluxtable})
+    return ["ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt"]
 end
 
-get_filename(::Type{Fluxtable}) = "fluxtable.txt"
+expiry_periods(::Type{Fluxtable}) = [Day(1)]
 
-get_expiry_period(::Type{Fluxtable}) = Day(1)
+function parse_files(::Type{Fluxtable}, filepaths::Vector{String})
+    # We only have one file here.
+    filepath = first(filepaths)
 
-function parse_space_file(::Type{Fluxtable}, filepath::String)
     # Allocate raw data.
     jd       = Float64[]
     f107_obs = Float64[]
@@ -106,29 +107,29 @@ end
 @register Fluxtable
 
 """
-    get_space_index(::Val{:F10adj}, jd_utc::Number) -> Float64
+    space_index(::Val{:F10adj}, jd_utc::Number) -> Float64
 
 Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
-function get_space_index(::Val{:F10adj}, jd_utc::Number)
+function space_index(::Val{:F10adj}, jd_utc::Number)
     obj = @object(Fluxtable)
     itp = obj.itp_f107_adj
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
 """
-    get_space_index(::Val{:F10obs}, jd_utc::Number) -> Float64
+    space_index(::Val{:F10obs}, jd_utc::Number) -> Float64
 
 Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
-function get_space_index(::Val{:F10obs}, jd_utc::Number)
+function space_index(::Val{:F10obs}, jd_utc::Number)
     obj = @object(Fluxtable)
     itp = obj.itp_f107_adj
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end

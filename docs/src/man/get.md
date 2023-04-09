@@ -13,20 +13,20 @@ After the initialization shown in [Initialization of Space Indices](@ref), the u
 obtain the space index value using the function:
 
 ```julia
-function get_space_index(::Val{:index}, jd::Number; kwargs...) -> Number
-function get_space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
+function space_index(::Val{:index}, jd::Number; kwargs...) -> Number
+function space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
 ```
 
 where `index` is the desired space index and `jd` is the Julian Day to obtain the
 information. The latter can also be specified using `instant`, which is a `DateTime` object.
 
 ```jldoctest
-julia> init_space_indices()
+julia> init_space_index_sets()
 
-julia> get_space_index(Val(:F10adj), DateTime(2020, 6, 19))
+julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
 71.1
 
-julia> get_space_index(Val(:F10adj), 2.4590195e6)
+julia> space_index(Val(:F10adj), 2.4590195e6)
 71.1
 ```
 

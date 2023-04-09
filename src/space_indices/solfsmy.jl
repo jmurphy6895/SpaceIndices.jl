@@ -27,7 +27,7 @@ const _SolfsmyItpType = Interpolations.GriddedInterpolation{
     Tuple{Array{Float64,1}}
 }
 
-struct Solfsmy <: SpaceIndexFile
+struct Solfsmy <: SpaceIndexSet
     itp_f10::_SolfsmyItpType
     itp_f81a::_SolfsmyItpType
     itp_s10::_SolfsmyItpType
@@ -42,13 +42,14 @@ end
 #                                           API
 ############################################################################################
 
-get_url(::Type{Solfsmy}) = return "http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT"
+urls(::Type{Solfsmy}) = ["http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT"]
 
-get_filename(::Type{Solfsmy}) = "SOLFSMY.TXT"
+expiry_periods(::Type{Solfsmy}) = [Day(1)]
 
-get_expiry_period(::Type{Solfsmy}) = Day(1)
+function parse_files(::Type{Solfsmy}, filepaths::Vector{String})
+    # We only have one file here.
+    filepath = first(filepaths)
 
-function parse_space_file(::Type{Solfsmy}, filepath::String)
     # Allocate the raw data.
     jd   = Float64[]
     f10  = Float64[]
@@ -124,30 +125,30 @@ end
 @register Solfsmy
 
 """
-    get_space_index(::Val{:S10}, jd_utc::Number) -> Float64
+    space_index(::Val{:S10}, jd_utc::Number) -> Float64
 
 Get the EUV index (26-34 nm) scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
-function get_space_index(::Val{:S10}, jd_utc::Number)
+function space_index(::Val{:S10}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_s10
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
 """
-    get_space_index(::Val{:S81a}, jd_utc::Number) -> Float64
+    space_index(::Val{:S81a}, jd_utc::Number) -> Float64
 
 Get the 81-day averaged EUV index (26-34 nm) scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the
 Julian day `jd_utc`.
 """
-function get_space_index(::Val{:S81a}, jd_utc::Number)
+function space_index(::Val{:S81a}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_s81a
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
@@ -156,52 +157,52 @@ end
 
 Get the MG2 index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the Julian day `jd_utc`.
 """
-function get_space_index(::Val{:M10}, jd_utc::Number)
+function space_index(::Val{:M10}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_m10
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
 """
-    get_space_index(::Val{:M81a}, jd_utc::Number) -> Float64
+    space_index(::Val{:M81a}, jd_utc::Number) -> Float64
 
 Get the 81-day averaged MG2 index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
-function get_space_index(::Val{:M81a}, jd_utc::Number)
+function space_index(::Val{:M81a}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_m81a
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
 """
-    get_space_index(::Val{:Y10}, jd_utc::Number) -> Float64
+    space_index(::Val{:Y10}, jd_utc::Number) -> Float64
 
 Get the solar X-ray & Lya index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the Julian day
 `jd_utc`.
 """
-function get_space_index(::Val{:Y10}, jd_utc::Number)
+function space_index(::Val{:Y10}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_y10
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end
 
 """
-    get_space_index(::Val{:Y81a}, jd_utc::Number) -> Float64
+    space_index(::Val{:Y81a}, jd_utc::Number) -> Float64
 
 Get the 81-day averaged solar X-ray & Lya index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for
 the Julian day `jd_utc`.
 """
-function get_space_index(::Val{:Y81a}, jd_utc::Number)
+function space_index(::Val{:Y81a}, jd_utc::Number)
     obj = @object(Solfsmy)
     itp = obj.itp_y81a
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end

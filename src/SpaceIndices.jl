@@ -18,7 +18,7 @@ include("./types.jl")
 ############################################################################################
 
 # Global vector to store the registered space files.
-const _SPACE_FILES = NTuple{2, Any}[]
+const _SPACE_INDEX_SETS = NTuple{2, Any}[]
 
 ############################################################################################
 #                                         Includes

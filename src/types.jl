@@ -3,15 +3,15 @@
 # Description
 # ==========================================================================================
 #
-#   Definiton of types and structures.
+#   Definition of types and structures.
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export SpaceIndexFile
+export SpaceIndexSet
 
 """
-    abstract type SpaceIndexFile
+    abstract type SpaceIndexSet
 
-Abstract type for all structures that represent space files.
+Abstract type for all structures that represent space index sets.
 """
-abstract type SpaceIndexFile end
+abstract type SpaceIndexSet end

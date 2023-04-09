@@ -1,77 +1,99 @@
 API for Space Files
 ===================
 
-This document describes the API that must be followed for space files.
+This document describes the API that must be followed for space index sets.
 
 ## Structure
 
-Each space file must have a structure that has `SpaceIndexFile` as its super-type. This
-structure must contain all the required field to process and return the indices related with
-the 
+Each space index set must have a structure that has `SpaceIndexSet` as its super-type. This
+structure must contain all the required field to process and return the indices provided by
+the set.
 
 ```julia
-struct MySpaceFile <: SpaceIndexFile
+struct MySpaceIndex <: SpaceIndexSet
     ...
 end
 ```
 
 ## Required API Functions
 
-We must define the following functions for every space file structure creates as in the
-previous section.
+We must define the following functions for every space index set defined as in the previous
+section.
 
 ```julia
-get_url(::Type{T}) where T<:SpaceIndexFile -> String
+function SpaceIndices.urls(::Type{T}) where T<:SpaceIndexFile -> Vector{String}
 ```
 
-This function must return a `String` with the space file URL. For example:
+This function must return a `Vector{String}` with the URLs to download the files for the
+indices. For example:
 
 ```julia
-get_url(::Type{MySpaceFile}) = "https://url.for.my/space.file.txt"
+SpaceIndices.urls(::Type{MySpaceIndex}) = ["https://url.for.my/space.file.txt"]
 ```
 
+---
+
 ```julia
-get_filename(::Type{T}) where T<:SpaceIndexFile -> String
+function SpaceIndices.expiry_periods(::Type{T}) where T<:SpaceIndexFile -> Vector{DatePeriod}
 ```
 
-This function must return a `String` with the filename for the space file. The system will
-used this information to save the data in the package scratch space. For example:
+This function must return the list with the expiry periods for the files in the space index
+set `T`. The remote files will always be downloaded if a time greater than this period has
+elapsed after the last download. For example:
 
 ```julia
-get_filename(::Type{MySpaceFile}) = "my_space_file.txt"
+SpaceIndices.filenames(::Type{MySpaceIndex}) = [Day(7)]
 ```
 
+---
+
 ```julia
-parse_space_file(::Type{T}, filepath::String) where T<:SpaceIndexFile -> T
+SpaceIndices.parse_files(::Type{T}, filepaths::Vector{String}) where T<:SpaceIndexFile -> T
 ```
 
-This function must parse the space index file `T` using the file in `filepath` and return an
-structure of type `T` with the parsed data. For example,
+This function must parse the files related to the space index set `T` using the files in
+`filepaths` and return an instance of `T` with the parsed data. For example,
 
 ```julia
-function parse_space_file(::Type{MySpaceFile}, filepath::String)
-    open(filepath, "r") do f
-        ...
-        return MySpaceFile(index_1, index_2, index_3)
+function SpaceIndices.parse_files(::Type{MySpaceIndex}, filepaths::Vector{String})
+    for filepath in filepaths
+        open(filepath, "r") do f
+            ...
+        end
     end
+        
+    return MySpaceIndex(...)
 end
 ```
 
-Finally, the new space file must also implement a set of functions with the following
+---
+
+Finally, the new space index set must also implement a set of functions with the following
 signature:
 
 ```julia
-get_space_index(::Val{:index}, jd::Number; kwargs...) -> Number
+SpaceIndices.space_index(::Val{:index}, jd::Number; kwargs...) -> Number
 ```
 
 where the space `index` for the Julian day `jd` will be returned.
 
-## Optional API Function
+## Optional API Functions
 
 ```julia
-get_expiry_period(::Type{T}) where T<:SpaceIndexFile -> DatePeriod
+function SpaceIndices.filenames(::Type{T}) where T<:SpaceIndexFile -> Vector{String}
 ```
 
-This function must return the expiry period for the space index file `T`. The remote file
-will always be downloaded again if a time larger than this period has passed after the last
-download. If this function is not defined, it returns `Day(7)` by default.
+This function can return a `Vector{String}` with the names of the remote files. The system
+will used this information to save the data in the package scratch space. 
+For example:
+
+```julia
+SpaceIndices.filenames(::Type{MySpaceIndex}) = ["my_space_file.txt"]
+```
+
+If this function is not defined, the filename will be obtained from the URL using the
+function `basename`.
+
+!!! warning
+    All functions that return a `Vector` must return an array with **the same number of
+    elements**.

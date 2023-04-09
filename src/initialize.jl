@@ -7,50 +7,53 @@
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-export init_space_index, init_space_indices
+export init_space_index_set, init_space_index_sets
 
 """
-    init_space_index(::Type{T}; kwargs...) where T<:SpaceIndexFile
+    init_space_index_set(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
 
-Initialize the space index `T`.
+Initialize the space index set `T`.
 
-This function will download the remote file associated to the space index `T` if it does
-not exist or if the redownload period has been passed. Aftward, it will parse the file and
-populate the object handler to be accesses by the function [`get_space_index`](@ref).
+This function will download the remote files associated with the space index set `T` if they
+do not exist or if their expiry period has been elapsed. Aftward, it will parse the files
+and populate the object to be accessed by the function [`space_index`](@ref).
 
 # Keywords
 
-- `force_download::Bool`: If `true`, the space file will be downloaded regardless of its
-    timestamp. (**Default** = `false`)
+- `force_download::Bool`: If `true`, the remote files will be downloaded regardless of their
+    timestamps. (**Default** = `false`)
 """
-function init_space_index(::Type{T}; force_download::Bool = false) where T<:SpaceIndexFile
-    id = findfirst(x -> first(x) === T, _SPACE_FILES)
-    isnothing(id) && throw(ArgumentError("The space file $T is not registered!"))
+function init_space_index_set(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
+    id = findfirst(x -> first(x) === T, _SPACE_INDEX_SETS)
+    isnothing(id) && throw(ArgumentError("The space index set $T is not registered!"))
 
     # Get the space index file handler.
-    handler = _SPACE_FILES[id] |> last
+    handler = _SPACE_INDEX_SETS[id] |> last
 
-    # Fetch the space file, if necessary, and parse it.
-    filepath = fetch_space_file(T; force_download)
-    obj = parse_space_file(T, filepath)
+    # Fetch the files, if necessary, and parse it.
+    filepaths = _fetch_files(T; force_download)
+    obj = parse_files(T, filepaths)
     push!(handler, obj)
 
     return nothing
 end
 
 """
-    init_space_indices(; blocklist::Vector = []) -> Nothing
+    init_space_index_sets(; blocklist::Vector = []) -> Nothing
 
-Initialize all the registered space indices.
+Initialize all the registered space index sets.
 
-This function will download the remote files associated to the space indices if they do
-not exist or if the redownload period has been passed. Aftward, it will parse the files and
-populate the object handlers to be accesses by the function [`get_space_index`](@ref).
+This function will download the remote files associated to the space index sets if they do
+not exist or if the expiry period has been elapsed. Aftward, it will parse the files and
+populate the objects to be accessed by the function [`space_index`](@ref).
+
+If the user does not want to initialize some sets, they can pass them in the keyword
+`blocklist`.
 """
-function init_space_indices(; blocklist::Vector = [])
-    # The vector `_SPACE_FILES` contains a set of `Tuple`s with the space file structure and
-    # its optional data handler.
-    for (T, handler) in _SPACE_FILES
+function init_space_index_sets(; blocklist::Vector = [])
+    # The vector `_SPACE_INDEX_SETS` contains a set of `Tuple`s with the space file
+    # structure and its optional data handler.
+    for (T, handler) in _SPACE_INDEX_SETS
         # If `T` is in block list, just continue.
         if (T ∈ blocklist)
             @debug "Skipping the space file $T."
@@ -58,8 +61,8 @@ function init_space_indices(; blocklist::Vector = [])
         end
 
         # Fetch the space file, if necessary, and parse it.
-        filepath = fetch_space_file(T)
-        obj = parse_space_file(T, filepath)
+        filepaths = _fetch_files(T)
+        obj = parse_files(T, filepaths)
         push!(handler, obj)
     end
 end

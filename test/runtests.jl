@@ -10,8 +10,8 @@ using SpaceIndices
     include("./initialization.jl")
 end
 
-@testset "Get Space Indices" verbose = true begin
-    include("./get_space_indices.jl")
+@testset "Obtaining Space Indices" verbose = true begin
+    include("./space_indices.jl")
 end
 
 @testset "API" verbose = true begin

@@ -23,7 +23,7 @@ const _DtcfileItpType = Interpolations.GriddedInterpolation{
     Tuple{Array{Float64,1}}
 }
 
-struct Dtcfile <: SpaceIndexFile
+struct Dtcfile <: SpaceIndexSet
     itp_dtc::_DtcfileItpType
 end
 
@@ -31,13 +31,14 @@ end
 #                                           API
 ############################################################################################
 
-get_url(::Type{Dtcfile}) = return "http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT"
+urls(::Type{Dtcfile}) = ["http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT"]
 
-get_filename(::Type{Dtcfile}) = "DTCFILE.TXT"
+expiry_periods(::Type{Dtcfile}) = [Day(1)]
 
-get_expiry_period(::Type{Dtcfile}) = Day(1)
+function parse_files(::Type{Dtcfile}, filepaths::Vector{String})
+    # We only have one file here.
+    filepath = first(filepaths)
 
-function parse_space_file(::Type{Dtcfile}, filepath::String)
     # Allocate the raw data.
     jd  = Float64[]
     dtc = Float64[]
@@ -89,14 +90,14 @@ end
 @register Dtcfile
 
 """
-    get_space_index(::Val{:DTC}, jd_utc::Number) -> Float64
+    space_index(::Val{:DTC}, jd_utc::Number) -> Float64
 
 Get the exospheric temperature variation [K] caused by the Dst index.
 """
-function get_space_index(::Val{:DTC}, jd_utc::Number)
+function space_index(::Val{:DTC}, jd_utc::Number)
     obj = @object(Dtcfile)
     itp = obj.itp_dtc
 
-    @check_timespan(itp, jd_utc)
+    check_timespan(itp, jd_utc)
     return itp(jd_utc)
 end

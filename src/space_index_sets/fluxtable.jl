@@ -67,8 +67,12 @@ function parse_files(::Type{Fluxtable}, filepaths::Vector{String})
                 Error parsing the line $line_num of fluxtable.txt.
                 File path: $path"""
 
-            # We will save only the flux obtained at 20h. This is what NRLMSISE-00 and
-            # JB2008 use.
+            # We will save only the flux obtained at 20h, which is the local noon at the
+            # observation site:
+            #
+            #    https://spaceweather.gc.ca/forecast-prevision/solar-solaire/solarflux/sx-3-en.php
+            #
+            # This is what NRLMSISE-00 and JB2008 use.
             fluxtime = parse(Int, tokens[2])
             (fluxtime != 200000) && continue
 

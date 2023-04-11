@@ -155,8 +155,9 @@ end
 We also need to populate the function `space_index` with the supported index in this file:
 
 ```julia
-function SpaceIndices.space_index(::Val{:LeapSeconds}, jd_utc::Number)
+function SpaceIndices.space_index(::Val{:LeapSeconds}, instant::DateTime)
     obj = SpaceIndices.@object(LeapSeconds)
+    jd = datetime2julian(instant)
     id = findfirst(>=(jd_utc), obj.jd)
 
     if isnothing(id)
@@ -177,10 +178,10 @@ We can now use the **SpaceIndices.jl** system to fetch the information:
 
 ```julia
 julia> SpaceIndices.init()
-[ Info: Downloading the file 'fluxtable.txt' from 'ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/ fluxtable.txt'...
+[ Info: Downloading the file 'fluxtable.txt' from 'ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt'...
 [ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
 [ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
-[ Info: Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'...
+[ Info: Downloading the file 'Kp_ap_Ap_SN_F107_since_1932.txt' from 'https://kp.gfz-potsdam.de/app/files/Kp_ap_Ap_SN_F107_since_1932.txt'...
 
 julia> space_index(Val(:LeapSeconds), now())
 37.0

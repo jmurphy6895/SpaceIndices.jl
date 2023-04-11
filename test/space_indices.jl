@@ -101,3 +101,34 @@ end
     @test_throws ArgumentError space_index(Val(:Y81a), dt)
     @test_throws ArgumentError space_index(Val(:Y81a), jd)
 end
+
+@testset "KpAp" begin
+    SpaceIndices.init_set(SpaceIndices.KpAp)
+    dt = DateTime(2020, 6, 19)
+    jd = dt |> datetime2julian
+
+    r = space_index(Val(:Kp), dt)
+    @test r == (0.667, 1.000, 0.333, 1.000, 0.667, 0.667, 1.333, 1.667)
+    r = space_index(Val(:Kp), jd)
+    @test r == (0.667, 1.000, 0.333, 1.000, 0.667, 0.667, 1.333, 1.667)
+
+    r = space_index(Val(:Ap), dt)
+    @test r == (3, 4, 2, 4, 3, 3, 5, 6)
+    r = space_index(Val(:Ap_daily), jd)
+    @test r == 4
+end
+
+@testset "KpAp [ERRORS]" begin
+    # The data starts on 1932-01-01.
+    dt = DateTime(1931, 12, 31)
+    jd = dt |> datetime2julian
+
+    @test_throws ArgumentError space_index(Val(:Kp), dt)
+    @test_throws ArgumentError space_index(Val(:Kp), jd)
+
+    @test_throws ArgumentError space_index(Val(:Ap), dt)
+    @test_throws ArgumentError space_index(Val(:Ap), jd)
+
+    @test_throws ArgumentError space_index(Val(:Ap_daily), dt)
+    @test_throws ArgumentError space_index(Val(:Ap_daily), jd)
+end

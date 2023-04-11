@@ -1,9 +1,9 @@
 module SpaceIndices
 
-using Dates
 using Reexport
 using Scratch
 
+@reexport using Dates
 @reexport using OptionalData
 
 ############################################################################################

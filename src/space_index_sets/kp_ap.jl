@@ -123,3 +123,18 @@ function space_index(::Val{:Kp}, instant::DateTime)
     date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
+
+"""
+    space_index(::Val{:Kp_daily}, instant::DateTime) -> Float64
+
+Get the daily Kp index for the day at `instant`.
+"""
+function space_index(::Val{:Kp_daily}, instant::DateTime)
+    obj    = @object(KpAp)
+    knots  = obj.vdate
+    values = obj.vkp
+    date   = Date(instant)
+    vkp    = constant_interpolation(knots, values, date)
+
+    return sum(vkp) / length(vkp)
+end

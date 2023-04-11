@@ -46,3 +46,4 @@ The following space indices are currently supported:
 | `KpAp`              | `Ap`       | Ap index computed every three hours.                      |                    |
 |                     | `Ap_daily` | Daily Ap index.                                           |                    |
 |                     | `Kp`       | Kp index computed every three hours.                      |                    |
+|                     | `Kp_daily` | Daily Kp index.                                           |                    |

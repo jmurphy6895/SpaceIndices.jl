@@ -112,8 +112,18 @@ end
     r = space_index(Val(:Kp), jd)
     @test r == (0.667, 1.000, 0.333, 1.000, 0.667, 0.667, 1.333, 1.667)
 
+    r = space_index(Val(:Kp_daily), dt)
+    @test r ≈ 0.91675
+    r = space_index(Val(:Kp_daily), jd)
+    @test r ≈ 0.91675
+
     r = space_index(Val(:Ap), dt)
     @test r == (3, 4, 2, 4, 3, 3, 5, 6)
+    r = space_index(Val(:Ap), jd)
+    @test r == (3, 4, 2, 4, 3, 3, 5, 6)
+
+    r = space_index(Val(:Ap_daily), dt)
+    @test r == 4
     r = space_index(Val(:Ap_daily), jd)
     @test r == 4
 end
@@ -125,6 +135,9 @@ end
 
     @test_throws ArgumentError space_index(Val(:Kp), dt)
     @test_throws ArgumentError space_index(Val(:Kp), jd)
+
+    @test_throws ArgumentError space_index(Val(:Kp_daily), dt)
+    @test_throws ArgumentError space_index(Val(:Kp_daily), jd)
 
     @test_throws ArgumentError space_index(Val(:Ap), dt)
     @test_throws ArgumentError space_index(Val(:Ap), jd)

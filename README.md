@@ -34,6 +34,7 @@ Those sets provide the following indices:
 | `KpAp`              | `Ap`       | Ap index computed every three hours.                      |                    |
 |                     | `Ap_daily` | Daily Ap index.                                           |                    |
 |                     | `Kp`       | Kp index computed every three hours.                      |                    |
+|                     | `Kp_daily` | Daily Kp index.                                           |                    |
 
 ## Installation
 

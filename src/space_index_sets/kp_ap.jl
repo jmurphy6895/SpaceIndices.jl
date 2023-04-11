@@ -112,7 +112,7 @@ function space_index(::Val{:Ap_daily}, instant::DateTime)
 end
 
 """
-    space_index(::Val{:Kp}, instant::DateTime) -> NTuple{8, Int64}
+    space_index(::Val{:Kp}, instant::DateTime) -> NTuple{8, Float64}
 
 Get the Kp index for the day at `instant` compute every three hours.
 """

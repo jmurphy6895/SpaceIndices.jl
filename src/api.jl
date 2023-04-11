@@ -39,7 +39,7 @@ macro object(T)
         isavailable($object_data_handler) || error(
             """
             The space index $(string($T)) was not initialized yet.
-            See the function init_space_indices() for more information."""
+            See the function SpaceIndices.init() for more information."""
         )
         get($object_data_handler)
     end

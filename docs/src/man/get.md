@@ -21,7 +21,7 @@ where `index` is the desired space index and `jd` is the Julian Day to obtain th
 information. The latter can also be specified using `instant`, which is a `DateTime` object.
 
 ```jldoctest
-julia> init_space_index_sets()
+julia> SpaceIndices.init()
 
 julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
 71.1

@@ -96,7 +96,7 @@ function _binary_search(v::AbstractVector{T}, x::T) where T
     while low < high
         mid = div(low + high, 2, RoundDown)
 
-        if (mid == num_elements) || v[mid] <= x < v[mid + 1]
+        if (mid == num_elements) || (v[mid] <= x < v[mid + 1])
             return mid
 
         elseif (v[mid] < x)

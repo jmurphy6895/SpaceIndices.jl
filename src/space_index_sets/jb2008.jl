@@ -87,7 +87,7 @@ function space_index(::Val{:S10}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vs10
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 """
@@ -101,7 +101,7 @@ function space_index(::Val{:S81a}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vs81a
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 """
@@ -114,7 +114,7 @@ function space_index(::Val{:M10}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vm10
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 """
@@ -128,7 +128,7 @@ function space_index(::Val{:M81a}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vm81a
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 """
@@ -142,7 +142,7 @@ function space_index(::Val{:Y10}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vy10
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 """
@@ -156,7 +156,7 @@ function space_index(::Val{:Y81a}, instant::DateTime)
     knots  = obj.vdate
     values = obj.vy81a
     date   = Date(instant)
-    return linear_interpolation(knots, values, date)
+    return constant_interpolation(knots, values, date)
 end
 
 ############################################################################################

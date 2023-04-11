@@ -31,5 +31,6 @@ include("./interpolations.jl")
 
 include("./space_index_sets/fluxtable.jl")
 include("./space_index_sets/jb2008.jl")
+include("./space_index_sets/kp_ap.jl")
 
 end # module SpaceIndices

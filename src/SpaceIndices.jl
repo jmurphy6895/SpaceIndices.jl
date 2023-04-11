@@ -1,7 +1,6 @@
 module SpaceIndices
 
 using Dates
-using Interpolations
 using Reexport
 using Scratch
 
@@ -24,12 +23,11 @@ const _SPACE_INDEX_SETS = NTuple{2, Any}[]
 #                                         Includes
 ############################################################################################
 
-include("./helpers.jl")
-
 include("./api.jl")
 include("./destroy.jl")
 include("./download.jl")
 include("./initialize.jl")
+include("./interpolations.jl")
 
 include("./space_index_sets/fluxtable.jl")
 include("./space_index_sets/jb2008.jl")

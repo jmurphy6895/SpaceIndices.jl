@@ -14,17 +14,10 @@
 #                                        Structure
 ############################################################################################
 
-const _FluxtableItpType = Interpolations.GriddedInterpolation{
-    Float64,
-    1,
-    Vector{Float64},
-    Gridded{Constant{Nearest, Throw{OnGrid}}},
-    Tuple{Array{Float64,1}}
-}
-
 struct Fluxtable <: SpaceIndexSet
-    itp_f107_obs::_FluxtableItpType
-    itp_f107_adj::_FluxtableItpType
+    vdate::Vector{Date}
+    vf107_obs::Vector{Float64}
+    vf107_adj::Vector{Float64}
 end
 
 ############################################################################################
@@ -42,12 +35,12 @@ function parse_files(::Type{Fluxtable}, filepaths::Vector{String})
     filepath = first(filepaths)
 
     # Allocate raw data.
-    jd       = Float64[]
-    f107_obs = Float64[]
-    f107_adj = Float64[]
+    vdate     = Date[]
+    vf107_obs = Float64[]
+    vf107_adj = Float64[]
 
-    # Store the latest processed Julian day.
-    jd_k_1 = zero(Float64)
+    # Store the latest processed day.
+    date_k_1 = Date(0, 1, 1)
 
     open(filepath) do file
         line_num = 0
@@ -78,62 +71,57 @@ function parse_files(::Type{Fluxtable}, filepaths::Vector{String})
 
             # The Julian day of the data will be computed at noon to allow using the
             # nearest-neighbor algorithm in the interpolations.
-            year  = parse(Int, tokens[1][1:4])
-            month = parse(Int, tokens[1][5:6])
-            day   = parse(Int, tokens[1][7:8])
-            jd_k  = datetime2julian(DateTime(year, month, day, 12, 0, 0))
+            year   = parse(Int, tokens[1][1:4])
+            month  = parse(Int, tokens[1][5:6])
+            day    = parse(Int, tokens[1][7:8])
+            date_k = Date(year, month, day)
 
             # If the current data is equal to the last one, it means we have duplicated
             # information. In this case, always use the latest one.
-            if jd_k == jd_k_1
-                pop!(jd)
-                pop!(f107_obs)
-                pop!(f107_adj)
+            if date_k == date_k_1
+                pop!(vdate)
+                pop!(vf107_obs)
+                pop!(vf107_adj)
             end
 
-            jd_k_1 = jd_k
+            date_k_1 = date_k
 
             # Get the raw data.
-            push!(jd,       jd_k)
-            push!(f107_obs, parse(Float64, tokens[5]))
-            push!(f107_adj, parse(Float64, tokens[6]))
+            push!(vdate,    date_k)
+            push!(vf107_obs, parse(Float64, tokens[5]))
+            push!(vf107_adj, parse(Float64, tokens[6]))
         end
     end
 
-    # Create the interpolations for each parameter.
-    knots = (jd,)
-    itp_f107_obs = interpolate( knots, f107_obs,  Gridded(Constant()) )
-    itp_f107_adj = interpolate( knots, f107_adj,  Gridded(Constant()) )
-
-    return Fluxtable(itp_f107_obs, itp_f107_adj)
+    return Fluxtable(vdate, vf107_obs, vf107_adj)
 end
 
 @register Fluxtable
 
 """
-    space_index(::Val{:F10adj}, jd_utc::Number) -> Float64
+    space_index(::Val{:F10adj}, instant::DateTime) -> Float64
 
-Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
-`jd_utc`.
+Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the `instant`
+(UTC).
 """
-function space_index(::Val{:F10adj}, jd_utc::Number)
-    obj = @object(Fluxtable)
-    itp = obj.itp_f107_adj
-
-    check_timespan(itp, jd_utc)
-    return itp(jd_utc)
+function space_index(::Val{:F10adj}, instant::DateTime)
+    obj    = @object(Fluxtable)
+    knots  = obj.vdate
+    values = obj.vf107_adj
+    date   = Date(instant)
+    return constant_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:F10obs}, jd_utc::Number) -> Float64
+    space_index(::Val{:F10obs}, instant::DateTime) -> Float64
 
-Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the Julian day
-`jd_utc`.
+Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] for the `instant`
+(UTC).
 """
-function space_index(::Val{:F10obs}, jd_utc::Number)
-    obj = @object(Fluxtable)
-    itp = obj.itp_f107_adj
-
-    check_timespan(itp, jd_utc)
-    return itp(jd_utc)
+function space_index(::Val{:F10obs}, instant::DateTime)
+    obj    = @object(Fluxtable)
+    knots  = obj.vdate
+    values = obj.vf107_obs
+    date   = Date(instant)
+    return constant_interpolation(knots, values, date)
 end

@@ -74,14 +74,14 @@ function SpaceIndices.parse_files(::Type{MySpaceIndex}, filepaths::Vector{String
 end
 ```
 
-Finally, the new space file must also implement a set of functions with the following
+Finally, the new space index set must also implement a set of functions with the following
 signature:
 
 ```julia
-SpaceIndices.space_index(::Val{:index}, jd::Number; kwargs...) -> Number
+SpaceIndices.space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
 ```
 
-where the space `index` for the Julian day `jd` will be returned.
+where the space `index` for the `instant` will be returned.
 
 ## Optional API Functions
 

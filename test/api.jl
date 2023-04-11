@@ -27,8 +27,9 @@ function SpaceIndices.parse_files(::Type{LeapSeconds}, filepaths::Vector{String}
     return LeapSeconds(raw_data[:, 1], raw_data[:, 2])
 end
 
-function SpaceIndices.space_index(::Val{:LeapSeconds}, jd_utc::Number)
+function SpaceIndices.space_index(::Val{:LeapSeconds}, instant::DateTime)
     obj = SpaceIndices.@object(LeapSeconds)
+    jd_utc = datetime2julian(instant)
     id = findfirst(>=(jd_utc), obj.jd)
 
     if isnothing(id)

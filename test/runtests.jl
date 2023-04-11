@@ -17,3 +17,7 @@ end
 @testset "API" verbose = true begin
     include("./api.jl")
 end
+
+@testset "Interpolations" verbose = true begin
+    include("./interpolations.jl")
+end

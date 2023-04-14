@@ -49,7 +49,7 @@ SpaceIndices.@register LeapSeconds
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any SpaceIndices.init_set(LeapSeconds)
+    ) match_mode = :any SpaceIndices.init(LeapSeconds)
 
     # Test some values.
     @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
@@ -68,7 +68,7 @@ SpaceIndices.@register LeapSeconds
     @test_logs (
         :debug,
         "We found a file that is less than 365 days old (timestamp = $timestamp). Hence, we will use it."
-    ) min_level = Logging.Debug match_mode = :any SpaceIndices.init_set(LeapSeconds)
+    ) min_level = Logging.Debug match_mode = :any SpaceIndices.init(LeapSeconds)
 
     # Test the some data.
     @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
@@ -91,7 +91,7 @@ end
     @test_logs (
         :debug,
         "We found a file that is less than 365 days old (timestamp = $new_timestamp). Hence, we will use it."
-    ) min_level = Logging.Debug match_mode = :any SpaceIndices.init_set(LeapSeconds)
+    ) min_level = Logging.Debug match_mode = :any SpaceIndices.init(LeapSeconds)
 
     # Test the some data.
     @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
@@ -108,7 +108,7 @@ end
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any SpaceIndices.init_set(LeapSeconds)
+    ) match_mode = :any SpaceIndices.init(LeapSeconds)
 
     # Test the some data.
     @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
@@ -119,7 +119,7 @@ end
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any SpaceIndices.init_set(LeapSeconds, force_download = true)
+    ) match_mode = :any SpaceIndices.init(LeapSeconds, force_download = true)
 
     # Test the some data.
     @test space_index(Val(:LeapSeconds), DateTime(1000, 1, 1)) == 11.0
@@ -134,7 +134,7 @@ end
     @test_logs (
         :info,
         "Downloading the file 'leap_seconds.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any SpaceIndices.init_set(LeapSeconds)
+    ) match_mode = :any SpaceIndices.init(LeapSeconds)
 end
 
 # Dummy Space Index Set
@@ -160,7 +160,7 @@ SpaceIndices.@register DummySet
     @test_logs (
         :info,
         "Downloading the file 'dummy.csv' from 'https://ronanarraes.com/space-indices/leap_seconds.csv'..."
-    ) match_mode = :any SpaceIndices.init_set(DummySet)
+    ) match_mode = :any SpaceIndices.init(DummySet)
 
     # Check if the file exits.
     cache_dir = get_scratch!(SpaceIndices, "DummySet")

@@ -8,7 +8,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 @testset "Fluxtable" begin
-    SpaceIndices.init_set(SpaceIndices.Fluxtable)
+    SpaceIndices.init(SpaceIndices.Fluxtable)
     dt = DateTime(2020, 6, 19)
     jd = dt |> datetime2julian
 
@@ -35,7 +35,7 @@ end
 end
 
 @testset "JB2008" begin
-    SpaceIndices.init_set(SpaceIndices.JB2008)
+    SpaceIndices.init(SpaceIndices.JB2008)
     dt = DateTime(2020, 6, 19, 9, 30, 0)
     jd = dt |> datetime2julian
 
@@ -103,7 +103,7 @@ end
 end
 
 @testset "KpAp" begin
-    SpaceIndices.init_set(SpaceIndices.KpAp)
+    SpaceIndices.init(SpaceIndices.KpAp)
     dt = DateTime(2020, 6, 19)
     jd = dt |> datetime2julian
 

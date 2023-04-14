@@ -8,7 +8,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 """
-    init_set(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
+    init(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
 
 Initialize the space index set `T`.
 
@@ -21,7 +21,7 @@ and populate the object to be accessed by the function [`space_index`](@ref).
 - `force_download::Bool`: If `true`, the remote files will be downloaded regardless of their
     timestamps. (**Default** = `false`)
 """
-function init_set(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
+function init(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
     id = findfirst(x -> first(x) === T, _SPACE_INDEX_SETS)
     isnothing(id) && throw(ArgumentError("The space index set $T is not registered!"))
 

@@ -20,19 +20,19 @@
     # Destroy everything to test the individual initialization.
     SpaceIndices.destroy()
 
-    SpaceIndices.init_set(SpaceIndices.JB2008)
+    SpaceIndices.init(SpaceIndices.JB2008)
     @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
     @test SpaceIndices._OPDATA_KPAP.data      isa Nothing
     SpaceIndices.destroy()
 
-    SpaceIndices.init_set(SpaceIndices.Fluxtable)
+    SpaceIndices.init(SpaceIndices.Fluxtable)
     @test SpaceIndices._OPDATA_JB2008.data    isa Nothing
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa SpaceIndices.Fluxtable
     @test SpaceIndices._OPDATA_KPAP.data      isa Nothing
     SpaceIndices.destroy()
 
-    SpaceIndices.init_set(SpaceIndices.KpAp)
+    SpaceIndices.init(SpaceIndices.KpAp)
     @test SpaceIndices._OPDATA_JB2008.data    isa Nothing
     @test SpaceIndices._OPDATA_FLUXTABLE.data isa Nothing
     @test SpaceIndices._OPDATA_KPAP.data      isa SpaceIndices.KpAp

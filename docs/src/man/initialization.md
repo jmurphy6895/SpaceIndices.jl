@@ -28,13 +28,14 @@ keyword `blocklist` to the function `SpaceIndices.init`.
 julia> SpaceIndices.init(; blocklist = [SpaceIndices.Fluxtable])
 ```
 
-If the user wants to initialize only one space index set, they can use the function:
+If the user wants to initialize only one space index set, they can pass it to the same
+function:
 
 ```julia
-function SpaceIndices.init_set(::Type{T}; force_download::Bool = true) where T<:SpaceIndexSet -> Nothing
+function SpaceIndices.init(::Type{T}; force_download::Bool = true) where T<:SpaceIndexSet -> Nothing
 ```
 
-where `T` must be the desired space index set. In this case, the user can pass the keyword
+where `T` must be the space index set. In this case, the user have access to the keyword
 `force_download`. If it is `true`, the remote files will be download regardless their
 timestamp.
 

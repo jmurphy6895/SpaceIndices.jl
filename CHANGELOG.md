@@ -5,7 +5,7 @@ Version 1.0.0
 -------------
 
 - ![BREAKING][badge-breaking] We renamed all the API and initialization functions to improve
-  name consistency. Now, only the functions `space_index` is exported. All others must be
+  name consistency. Now, only the function `space_index` is exported. All others must be
   accessed using `SpaceIndices.` prefix.
 - ![Feature][badge-feature] We added the following space index sets: `JB2008` and `KpAp`.
 - ![Enhancement][badge-enhancement] We now re-export the modules `OptionalData` and `Dates`.

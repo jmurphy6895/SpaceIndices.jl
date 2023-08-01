@@ -29,14 +29,14 @@ We must define the following functions for every space index set defined as in t
 section.
 
 ```julia
-function SpaceIndices.urls(::Type{T}) where T<:SpaceIndexFile -> Vector{String}
+function SpaceIndices.urls(::Type{T}; kwargs...) where T<:SpaceIndexFile -> Vector{String}
 ```
 
 This function must return a `Vector{String}` with the URLs to download the files for the
 indices. For example:
 
 ```julia
-SpaceIndices.urls(::Type{MySpaceIndex}) = ["https://url.for.my/space.file.txt"]
+SpaceIndices.urls(::Type{MySpaceIndex}; kwargs...) = ["https://url.for.my/space.file.txt"]
 ```
 
 ---
@@ -142,7 +142,7 @@ where `jd` contains the Julian days in which the leap seconds were modified to t
 We also need to overload the API functions:
 
 ```julia
-SpaceIndices.urls(::Type{LeapSeconds}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.urls(::Type{LeapSeconds}; kwargs...) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
 SpaceIndices.expiry_periods(::Type{LeapSeconds}) = [Day(365)]
 
 function SpaceIndices.parse_file(::Type{LeapSeconds}, filepaths::Vector{String})
@@ -178,10 +178,9 @@ We can now use the **SpaceIndices.jl** system to fetch the information:
 
 ```julia
 julia> SpaceIndices.init()
-[ Info: Downloading the file 'fluxtable.txt' from 'ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt'...
 [ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
 [ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
-[ Info: Downloading the file 'Kp_ap_Ap_SN_F107_since_1932.txt' from 'https://kp.gfz-potsdam.de/app/files/Kp_ap_Ap_SN_F107_since_1932.txt'...
+[ Info: Downloading the file 'SW-All.csv' from 'https://celestrak.org/SpaceData/SW-All.csv'...
 
 julia> space_index(Val(:LeapSeconds), now())
 37.0

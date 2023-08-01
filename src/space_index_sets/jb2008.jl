@@ -37,7 +37,7 @@ end
 #                                           API
 ############################################################################################
 
-urls(::Type{JB2008}) = [
+urls(::Type{JB2008}; kwargs...) = [
     "http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT"
     "http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT"
 ]

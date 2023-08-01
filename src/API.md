@@ -21,14 +21,14 @@ We must define the following functions for every space index set defined as in t
 section.
 
 ```julia
-function SpaceIndices.urls(::Type{T}) where T<:SpaceIndexFile -> Vector{String}
+function SpaceIndices.urls(::Type{T}; kwargs...) where T<:SpaceIndexFile -> Vector{String}
 ```
 
 This function must return a `Vector{String}` with the URLs to download the files for the
 indices. For example:
 
 ```julia
-SpaceIndices.urls(::Type{MySpaceIndex}) = ["https://url.for.my/space.file.txt"]
+SpaceIndices.urls(::Type{MySpaceIndex}; kwargs...) = ["https://url.for.my/space.file.txt"]
 ```
 
 ---

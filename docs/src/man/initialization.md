@@ -28,14 +28,6 @@ keyword `blocklist` to the function `SpaceIndices.init`.
 julia> SpaceIndices.init(; blocklist = [SpaceIndices.Celestrak])
 ```
 
-If the user wants to download the entire history of space indices from Celestrak rather 
-than just the last 5 years, they can pass in the keyword `all_history` to the function
-`SpaceIndices.init`.
-
-```julia-repl
-julia> SpaceIndices.init(; all_history=true)
-```
-
 If the user wants to initialize only one space index set, they can pass it to the same
 function:
 

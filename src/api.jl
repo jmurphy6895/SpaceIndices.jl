@@ -132,9 +132,9 @@ parse_files
 #
 # - `force_download::Bool`: If `true`, the files will be downloaded regardless of its
 #   timestamp. (**Default** = `false`)
-function _fetch_files(::Type{T}; force_download::Bool = false, all_history::Bool = false) where T<:SpaceIndexSet
+function _fetch_files(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
     # Get the information for the structure `T`.
-    T_urls           = urls(T; all_history=all_history)
+    T_urls           = urls(T)
     T_filenames      = filenames(T)
     T_expiry_periods = expiry_periods(T)
 

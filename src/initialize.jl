@@ -29,7 +29,7 @@ function init(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
     handler = _SPACE_INDEX_SETS[id] |> last
 
     # Fetch the files, if necessary, and parse it.
-    filepaths = _fetch_files(T; force_download=force_download, all_history=all_history)
+    filepaths = _fetch_files(T; force_download=force_download)
     obj = parse_files(T, filepaths)
     push!(handler, obj)
 
@@ -59,7 +59,7 @@ function init(; blocklist::Vector = [])
         end
 
         # Fetch the space file, if necessary, and parse it.
-        filepaths = _fetch_files(T; all_history=all_history)
+        filepaths = _fetch_files(T)
         obj = parse_files(T, filepaths)
         push!(handler, obj)
     end

@@ -25,7 +25,7 @@ If the user does not want to download a set of space indices, they can pass them
 keyword `blocklist` to the function `SpaceIndices.init`.
 
 ```julia-repl
-julia> SpaceIndices.init(; blocklist = [SpaceIndices.Fluxtable])
+julia> SpaceIndices.init(; blocklist = [SpaceIndices.Celestrak])
 ```
 
 If the user wants to initialize only one space index set, they can pass it to the same
@@ -41,8 +41,8 @@ timestamp.
 
 ```jldoctest
 julia> SpaceIndices.init()
-[ Info: Downloading the file 'fluxtable.txt' from 'ftp://ftp.seismo.nrcan.gc.ca/spaceweather/solar_flux/daily_flux_values/fluxtable.txt'...
 [ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
 [ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
-[ Info: Downloading the file 'Kp_ap_Ap_SN_F107_since_1932.txt' from 'https://kp.gfz-potsdam.de/app/files/Kp_ap_Ap_SN_F107_since_1932.txt'...
+[ Info: Downloading the file 'SW-All.csv' from 'https://celestrak.org/SpaceData/SW-All.csv'...
+
 ```

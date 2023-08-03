@@ -51,7 +51,7 @@ end
     @register(T)
 
 Register the the space index set `T`. This macro push the data into the global vector of
-space files and also creates the optinal data handler for the processed structure.
+space files and also creates the optional data handler for the processed structure.
 """
 macro register(T)
     opdata_handler = @data_handler(T)

@@ -2,6 +2,7 @@ module SpaceIndices
 
 using Reexport
 using Scratch
+using DelimitedFiles
 
 @reexport using Dates
 @reexport using OptionalData
@@ -29,8 +30,7 @@ include("./download.jl")
 include("./initialize.jl")
 include("./interpolations.jl")
 
-include("./space_index_sets/fluxtable.jl")
 include("./space_index_sets/jb2008.jl")
-include("./space_index_sets/kp_ap.jl")
+include("./space_index_sets/celestrak.jl")
 
 end # module SpaceIndices

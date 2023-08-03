@@ -37,14 +37,6 @@
     @test SpaceIndices._OPDATA_CELESTRAK.data isa Nothing
     SpaceIndices.destroy()
 
-    # All History
-    # ======================================================================================
-
-    SpaceIndices.init(; all_history=true)
-    @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
-    @test SpaceIndices._OPDATA_CELESTRAK.data isa SpaceIndices.Celestrak
-    SpaceIndices.destroy()
-
 end
 
 @testset "Errors Related To Unitialized Space Indices" begin

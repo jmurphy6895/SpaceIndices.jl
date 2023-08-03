@@ -18,7 +18,7 @@ struct LeapSeconds <: SpaceIndexSet
     leap_seconds::Vector{Float64}
 end
 
-SpaceIndices.urls(::Type{LeapSeconds}; kwargs...) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.urls(::Type{LeapSeconds}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
 SpaceIndices.expiry_periods(::Type{LeapSeconds}) = [Day(365)]
 
 function SpaceIndices.parse_files(::Type{LeapSeconds}, filepaths::Vector{String})
@@ -146,7 +146,7 @@ end
 struct DummySet <: SpaceIndexSet
 end
 
-SpaceIndices.urls(::Type{DummySet}; kwargs...) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.urls(::Type{DummySet}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
 SpaceIndices.expiry_periods(::Type{DummySet}) = [Day(365)]
 SpaceIndices.filenames(::Type{DummySet}) = ["dummy.csv"]
 SpaceIndices.parse_files(::Type{DummySet}, filepaths::Vector{String}) = DummySet()

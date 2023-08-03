@@ -4,7 +4,7 @@
 # ==========================================================================================
 #
 #   Space index file: SW-Last5Years.csv
-#   Default URL: https://celestrak.org/SpaceData/SW-Last5Years.csv
+#   Default URL: https://celestrak.org/SpaceData/SW-All.csv
 #
 #   This file stores the historic and predicted Geomagnetic and Solar Flux data used in 
 #   space weather models. Documentation can be found at 
@@ -34,10 +34,8 @@ struct Celestrak <: SpaceIndexSet
     vf107_adj_avg_last81::Vector{Float64}
 end
 
-function urls(::Type{Celestrak}; all_history::Bool=false, kwargs...)
-    return all_history ?
-     ["https://celestrak.org/SpaceData/SW-All.csv"] :
-     ["https://celestrak.org/SpaceData/SW-Last5Years.csv"]
+function urls(::Type{Celestrak})
+    ["https://celestrak.org/SpaceData/SW-All.csv"]
 end
 
 expiry_periods(::Type{Celestrak}) = [Day(1)]

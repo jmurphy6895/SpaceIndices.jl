@@ -21,7 +21,7 @@ and populate the object to be accessed by the function [`space_index`](@ref).
 - `force_download::Bool`: If `true`, the remote files will be downloaded regardless of their
     timestamps. (**Default** = `false`)
 """
-function init(::Type{T}; force_download::Bool = false, all_history::Bool=false) where T<:SpaceIndexSet
+function init(::Type{T}; force_download::Bool = false) where T<:SpaceIndexSet
     id = findfirst(x -> first(x) === T, _SPACE_INDEX_SETS)
     isnothing(id) && throw(ArgumentError("The space index set $T is not registered!"))
 
@@ -48,7 +48,7 @@ populate the objects to be accessed by the function [`space_index`](@ref).
 If the user does not want to initialize some sets, they can pass them in the keyword
 `blocklist`.
 """
-function init(; blocklist::Vector = [], all_history::Bool=false)
+function init(; blocklist::Vector = [])
     # The vector `_SPACE_INDEX_SETS` contains a set of `Tuple`s with the space file
     # structure and its optional data handler.
     for (T, handler) in _SPACE_INDEX_SETS

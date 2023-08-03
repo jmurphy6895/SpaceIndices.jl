@@ -29,14 +29,14 @@ We must define the following functions for every space index set defined as in t
 section.
 
 ```julia
-function SpaceIndices.urls(::Type{T}; kwargs...) where T<:SpaceIndexFile -> Vector{String}
+function SpaceIndices.urls(::Type{T}) where T<:SpaceIndexFile -> Vector{String}
 ```
 
 This function must return a `Vector{String}` with the URLs to download the files for the
 indices. For example:
 
 ```julia
-SpaceIndices.urls(::Type{MySpaceIndex}; kwargs...) = ["https://url.for.my/space.file.txt"]
+SpaceIndices.urls(::Type{MySpaceIndex}) = ["https://url.for.my/space.file.txt"]
 ```
 
 ---
@@ -142,7 +142,7 @@ where `jd` contains the Julian days in which the leap seconds were modified to t
 We also need to overload the API functions:
 
 ```julia
-SpaceIndices.urls(::Type{LeapSeconds}; kwargs...) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
+SpaceIndices.urls(::Type{LeapSeconds}) = ["https://ronanarraes.com/space-indices/leap_seconds.csv"]
 SpaceIndices.expiry_periods(::Type{LeapSeconds}) = [Day(365)]
 
 function SpaceIndices.parse_file(::Type{LeapSeconds}, filepaths::Vector{String})

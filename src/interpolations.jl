@@ -11,7 +11,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 """
-    constant_interpolation(knots::Vector{Date}, values::AbstractVector, x::Date) -> eltype(values)
+    constant_interpolation(knots::Vector{Tk}, values::AbstractVector, x::Tk) -> eltype(values)
 
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
@@ -23,9 +23,14 @@ function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVecto
     knots_end = last(knots)
 
     if !(knots_beg <= x <= knots_end)
+
+        x_dt = julian2datetime(x)
+        knots_beg_dt = julian2datetime(knots_beg)
+        knots_end_dt = julian2datetime(knots_end)
+
         throw(ArgumentError("""
-            There is no available data for x = $(x)!
-            The available interval is: x ∈ [$knots_beg, $knots_end]."""
+            There is no available data for x = $(x_dt)!
+            The available interval is: x ∈ [$knots_beg_dt, $knots_end_dt]."""
         ))
     end
 
@@ -47,10 +52,14 @@ function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{
     knots_beg = first(knots)
     knots_end = last(knots)
 
+    x_dt = julian2datetime(x)
+    knots_beg_dt = julian2datetime(knots_beg)
+    knots_end_dt = julian2datetime(knots_end)
+
     if !(knots_beg <= x <= knots_end)
         throw(ArgumentError("""
-            There is no available data for x = $(x)!
-            The available interval is: x ∈ [$knots_beg -- $knots_end]."""
+            There is no available data for x = $(x_dt)!
+            The available interval is: x ∈ [$knots_beg_dt -- $knots_end_dt]."""
         ))
     end
 

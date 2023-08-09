@@ -73,6 +73,7 @@ signature:
 
 ```julia
 SpaceIndices.space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
+SpaceIndices.space_index(::Val{:index}, jd_since_JD_J2000::Number; kwargs...) -> Number
 ```
 
 where the space `index` for the `instant` will be returned.

@@ -18,11 +18,11 @@
 
 struct JB2008 <: SpaceIndexSet
     # File: DTCFILE.TXT
-    vdatetime::Vector{DateTime}
+    vdatetime::Vector{Number}
     vdtc::Vector{Float64}
 
     # File: SOLFSMY.TXT
-    vdate::Vector{Date}
+    vdate::Vector{Number}
     vf10::Vector{Float64}
     vf81a::Vector{Float64}
     vs10::Vector{Float64}
@@ -66,96 +66,90 @@ end
 @register JB2008
 
 """
-    space_index(::Val{:DTC}, instant::DateTime) -> Float64
+    space_index(::Val{:DTC}, date::Number) -> Float64
 
 Get the exospheric temperature variation [K] caused by the Dst index at `instant` (UTC).
 """
-function space_index(::Val{:DTC}, instant::DateTime)
+function space_index(::Val{:DTC}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdatetime
     values = obj.vdtc
-    return linear_interpolation(knots, values, instant)
+    return linear_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:S10}, instant::DateTime) -> Float64
+    space_index(::Val{:S10}, date::Number) -> Float64
 
 Get the EUV index (26-34 nm) scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the `instant` (UTC).
 """
-function space_index(::Val{:S10}, instant::DateTime)
+function space_index(::Val{:S10}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vs10
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:S81a}, instant::DateTime) -> Float64
+    space_index(::Val{:S81a}, date::Number) -> Float64
 
 Get the 81-day averaged EUV index (26-34 nm) scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the
 `instant` (UTC).
 """
-function space_index(::Val{:S81a}, instant::DateTime)
+function space_index(::Val{:S81a}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vs81a
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
 """
-    get_space_index(::Val{:M10}, instant::DateTime) -> Float64
+    get_space_index(::Val{:M10}, date::Number) -> Float64
 
 Get the MG2 index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the `instant` (UTC).
 """
-function space_index(::Val{:M10}, instant::DateTime)
+function space_index(::Val{:M10}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vm10
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:M81a}, instant::DateTime) -> Float64
+    space_index(::Val{:M81a}, date::Number) -> Float64
 
 Get the 81-day averaged MG2 index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the `instant`
 (UTC).
 """
-function space_index(::Val{:M81a}, instant::DateTime)
+function space_index(::Val{:M81a}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vm81a
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:Y10}, instant::DateTime) -> Float64
+    space_index(::Val{:Y10}, date::Number) -> Float64
 
 Get the solar X-ray & Lya index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for the `instant`
 (UTC).
 """
-function space_index(::Val{:Y10}, instant::DateTime)
+function space_index(::Val{:Y10}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vy10
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
 """
-    space_index(::Val{:Y81a}, instant::DateTime) -> Float64
+    space_index(::Val{:Y81a}, date::Number) -> Float64
 
 Get the 81-day averaged solar X-ray & Lya index scaled to F10.7 [10⁻²² W / (M² ⋅ Hz)] for
 the `instant` (UTC).
 """
-function space_index(::Val{:Y81a}, instant::DateTime)
+function space_index(::Val{:Y81a}, date::Number)
     obj    = @object(JB2008)
     knots  = obj.vdate
     values = obj.vy81a
-    date   = Date(instant)
     return constant_interpolation(knots, values, date)
 end
 
@@ -166,7 +160,7 @@ end
 # Parse the DTCFILE.TXT and return the interpolators.
 function _parse_dtcfile(filepath::String)
     # Allocate the raw data.
-    vdatetime = DateTime[]
+    vdatetime = Float64[]
     vdtc      = Float64[]
 
     open(filepath) do file
@@ -194,11 +188,10 @@ function _parse_dtcfile(filepath::String)
             year = parse(Int,     tokens[2])
             doy  = parse(Float64, tokens[3])
 
-            datetime_0h = DateTime(year, 1, 1, 0, 0, 0) + Day(doy - 1)
-
+            datetime_0h = ((DateTime(year, 1, 1, 0, 0, 0) + Day(doy - 1)) |> datetime2julian) - JD_J2000_SI
             # Parse the data.
             for k = 1:24
-                push!(vdatetime, datetime_0h + Hour(k - 1))
+                push!(vdatetime, datetime_0h + (k-1)/24.0)
                 push!(vdtc,      parse(Float64, tokens[k + 3]))
             end
         end
@@ -210,7 +203,7 @@ end
 # Parse the SOLFSMY.TXT and return the interpolators.
 function _parse_solfsmy(filepath::String)
     # Allocate the raw data.
-    vdate = Date[]
+    vdate = Float64[]
     vf10  = Float64[]
     vf81a = Float64[]
     vs10  = Float64[]
@@ -245,7 +238,7 @@ function _parse_solfsmy(filepath::String)
             # Get the date.
             year = parse(Int, tokens[1])
             doy  = parse(Int, tokens[2])
-            date = Date(year, 1, 1) + Day(doy - 1)
+            date = ((DateTime(year, 1, 1) + Day(doy - 1)) |> datetime2julian) - JD_J2000_SI
 
             # Parse data.
             push!(vdate, date)

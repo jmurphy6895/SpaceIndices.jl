@@ -110,7 +110,7 @@ index.
 space_index
 
 function space_index(index::Val, date::DateTime)
-    return space_index(index, datetime2julian(date) - JD_J2000_SI)
+    return space_index(index, datetime2julian(date))
 end
 
 """

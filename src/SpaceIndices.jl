@@ -20,11 +20,6 @@ include("./types.jl")
 # Global vector to store the registered space files.
 const _SPACE_INDEX_SETS = NTuple{2, Any}[]
 
-#Julian Day of J2000.0 epoch (2000-01-01T12:00:00.000).
-#Put here to keep from importing the whole SatelliteToolboxBase Pkg
-export JD_J2000_SI
-const JD_J2000_SI = 2451545.0
-
 ############################################################################################
 #                                         Includes
 ############################################################################################

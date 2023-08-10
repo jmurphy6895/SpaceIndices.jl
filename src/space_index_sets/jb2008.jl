@@ -188,7 +188,7 @@ function _parse_dtcfile(filepath::String)
             year = parse(Int,     tokens[2])
             doy  = parse(Float64, tokens[3])
 
-            datetime_0h = ((DateTime(year, 1, 1, 0, 0, 0) + Day(doy - 1)) |> datetime2julian) - JD_J2000_SI
+            datetime_0h = datetime2julian(DateTime(year, 1, 1, 0, 0, 0) + Day(doy - 1))
             # Parse the data.
             for k = 1:24
                 push!(vdatetime, datetime_0h + (k-1)/24.0)
@@ -238,7 +238,7 @@ function _parse_solfsmy(filepath::String)
             # Get the date.
             year = parse(Int, tokens[1])
             doy  = parse(Int, tokens[2])
-            date = ((DateTime(year, 1, 1) + Day(doy - 1)) |> datetime2julian) - JD_J2000_SI
+            date = datetime2julian(DateTime(year, 1, 1) + Day(doy - 1))
 
             # Parse data.
             push!(vdate, date)

@@ -16,7 +16,7 @@
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
 """
-function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tx) where {Tk, Tv, Tx}
+function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector, x::Tk) where Tk
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)
@@ -45,16 +45,16 @@ end
 
 Perform a linear interpolation at `x` of `values` evaluated at `knots`.
 """
-function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tx) where {Tk, Tv, Tx}
+function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)
 
-    x_dt = julian2datetime(x)
-    knots_beg_dt = julian2datetime(knots_beg)
-    knots_end_dt = julian2datetime(knots_end)
-
     if !(knots_beg <= x <= knots_end)
+        x_dt = julian2datetime(x)
+        knots_beg_dt = julian2datetime(knots_beg)
+        knots_end_dt = julian2datetime(knots_end)
+
         throw(ArgumentError("""
             There is no available data for x = $(x_dt)!
             The available interval is: x ∈ [$knots_beg_dt -- $knots_end_dt]."""
@@ -65,19 +65,25 @@ function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{
     # apply this algorithm because we assume that `knots` are unique and increasing.
     id = _binary_search(knots, x)
 
-    # Here, we need to perform the interpolation using the adjacent knots.
-    x₀ = knots[id]
-    x₁ = knots[id + 1]
+    # If we are at the knot precisely, just return it.
+    if x == knots[id]
+        return values[id]
 
-    y₀ = values[id]
-    y₁ = values[id + 1]
+    else
+        # Here, we need to perform the interpolation using the adjacent knots.
+        x₀ = knots[id]
+        x₁ = knots[id + 1]
 
-    Δy = y₁ - y₀
-    Δx = x₁ - x₀
+        y₀ = values[id]
+        y₁ = values[id + 1]
 
-    y  = y₀ + Δy * (x - x₀) / Δx
+        Δy = y₁ - y₀
+        Δx = x₁ - x₀
 
-    return y
+        y  = y₀ + Δy * (x - x₀) / Δx
+
+        return y
+    end
 end
 
 ############################################################################################

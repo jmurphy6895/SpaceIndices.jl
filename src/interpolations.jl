@@ -16,9 +16,8 @@
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
 """
-function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector, x::Tk) where Tk
+function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tx) where {Tk, Tv, Tx}
     # First, we need to verify if `x` is inside the domain.
-    num_knots = length(knots)
     knots_beg = first(knots)
     knots_end = last(knots)
 
@@ -46,9 +45,8 @@ end
 
 Perform a linear interpolation at `x` of `values` evaluated at `knots`.
 """
-function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
+function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tx) where {Tk, Tv, Tx}
     # First, we need to verify if `x` is inside the domain.
-    num_knots = length(knots)
     knots_beg = first(knots)
     knots_end = last(knots)
 
@@ -63,32 +61,23 @@ function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{
         ))
     end
 
-    # Type of the returned value.
-    T = float(Tv)
-
     # Find the vector index related to the request interval using binary search. We can
     # apply this algorithm because we assume that `knots` are unique and increasing.
     id = _binary_search(knots, x)
 
-    # If we are at the knot precisely, just return it.
-    if x == knots[id]
-        return Tv(values[id])
+    # Here, we need to perform the interpolation using the adjacent knots.
+    x₀ = knots[id]
+    x₁ = knots[id + 1]
 
-    else
-        # Here, we need to perform the interpolation using the adjacent knots.
-        x₀ = knots[id]
-        x₁ = knots[id + 1]
+    y₀ = values[id]
+    y₁ = values[id + 1]
 
-        y₀ = T(values[id])
-        y₁ = T(values[id + 1])
+    Δy = y₁ - y₀
+    Δx = x₁ - x₀
 
-        Δy = y₁ - y₀
-        Δx = x₁ - x₀
+    y  = y₀ + Δy * (x - x₀) / Δx
 
-        y  = y₀ + Δy * T((x - x₀) / Δx)
-
-        return y
-    end
+    return y
 end
 
 ############################################################################################

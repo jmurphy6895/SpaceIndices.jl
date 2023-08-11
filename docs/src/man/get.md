@@ -13,7 +13,7 @@ After the initialization shown in [Initialization of Space Indices](@ref), the u
 obtain the space index value using the function:
 
 ```julia
-function space_index(::Val{:index}, jd_since_JD_J2000::Number; kwargs...) -> Number
+function space_index(::Val{:index}, jd::Number; kwargs...) -> Number
 function space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
 ```
 
@@ -26,7 +26,7 @@ julia> SpaceIndices.init()
 julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
 71.1
 
-julia> space_index(Val(:F10adj), 2.4590195e6 - JD_J2000_SI)
+julia> space_index(Val(:F10adj), 2.4590195e6)
 71.1
 ```
 

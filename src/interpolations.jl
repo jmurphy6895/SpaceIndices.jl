@@ -11,12 +11,12 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 """
-    constant_interpolation(knots::Vector{Tk}, values::AbstractVector, x::Tk) -> eltype(values)
+    constant_interpolation(knots::AbstractVector, values::AbstractVector, x) -> eltype(values)
 
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
 """
-function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector, x::Tk) where Tk
+function constant_interpolation(knots::AbstractVector, values::AbstractVector, x)
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)
@@ -41,11 +41,11 @@ function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVecto
 end
 
 """
-    linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
+    linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
 
 Perform a linear interpolation at `x` of `values` evaluated at `knots`.
 """
-function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
+function linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)

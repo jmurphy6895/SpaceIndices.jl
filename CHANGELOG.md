@@ -1,6 +1,17 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 1.1.0
+-------------
+
+- ![Enhancement][badge-enhancement] We now use the Celestrak file `SW-All.csv` to obtain
+  some space indices such as the F10.7, Ap, and Kp. We also removed the old files
+  `fluxtable.txt` and `Kp_ap_Ap_SN_F107_since_1932.txt`. Notice that this modification **is
+  not considered** to be breaking because all indices can be fetched using the same
+  functions (API). (PR [#2][gh-pr-2]))
+- ![Feature][badge-feature] We added some other indices available in `SW-All.csv`.
+  (PR [#2][gh-pr-2]))
+
 Version 1.0.0
 -------------
 
@@ -27,3 +38,4 @@ Version 0.1.0
 [badge-bugfix]: https://img.shields.io/badge/Bugfix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
+[gh-pr-2]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/2

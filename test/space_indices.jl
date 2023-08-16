@@ -8,9 +8,9 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 @testset "Celestrak" begin
-    ##################################################
-    #* F10.7 Indices
-    ##################################################  
+    # F10.7 Indices
+    # ======================================================================================
+
     SpaceIndices.init(SpaceIndices.Celestrak)
     dt = DateTime(2020, 6, 19, 8)
     jd = dt |> datetime2julian
@@ -104,9 +104,9 @@
     r = space_index(Val(:F10obs_avg_last81), jd)
     @test r ≈ 188.2
 
-    ##################################################
-    #* Kp & Ap
-    ##################################################  
+    # Kp & Ap
+    # ======================================================================================
+
     dt = DateTime(2020, 6, 19)
     jd = dt |> datetime2julian
 
@@ -153,82 +153,82 @@
     r = space_index(Val(:Ap_daily), jd)
     @test r == 64
 
-    ##################################################
-    #* Other Indices
-    ##################################################  
+    # Other Indices
+    # ======================================================================================
+
     dt = DateTime(2020, 6, 19)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:BSRN),     dt)
+    r = space_index(Val(:BSRN), dt)
     @test r == 2549
-    r = space_index(Val(:BSRN),     jd)
+    r = space_index(Val(:BSRN), jd)
     @test r == 2549
-    
-    r = space_index(Val(:ND),       dt)
+
+    r = space_index(Val(:ND), dt)
     @test r == 3
-    r = space_index(Val(:ND),       jd)
+    r = space_index(Val(:ND), jd)
     @test r == 3
 
-    r = space_index(Val(:C9),       dt)
+    r = space_index(Val(:C9), dt)
     @test r == 0.0
-    r = space_index(Val(:C9),       jd)
+    r = space_index(Val(:C9), jd)
     @test r == 0.0
-    
-    r = space_index(Val(:Cp),       dt)
+
+    r = space_index(Val(:Cp), dt)
     @test r == 0.1
-    r = space_index(Val(:Cp),       jd)
+    r = space_index(Val(:Cp), jd)
     @test r == 0.1
 
-    r = space_index(Val(:ISN),      dt)
+    r = space_index(Val(:ISN), dt)
     @test r == 0
-    r = space_index(Val(:ISN),      jd)
+    r = space_index(Val(:ISN), jd)
     @test r == 0
-    
-    r = space_index(Val(:ND),       dt)
+
+    r = space_index(Val(:ND), dt)
     @test r == 3
-    r = space_index(Val(:ND),       jd)
+    r = space_index(Val(:ND), jd)
     @test r == 3
 
     dt = DateTime(2000, 6, 8)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:BSRN),     dt)
+    r = space_index(Val(:BSRN), dt)
     @test r == 2278
-    r = space_index(Val(:BSRN),     jd)
+    r = space_index(Val(:BSRN), jd)
     @test r == 2278
-    
-    r = space_index(Val(:ND),       dt)
+
+    r = space_index(Val(:ND), dt)
     @test r == 4
-    r = space_index(Val(:ND),       jd)
+    r = space_index(Val(:ND), jd)
     @test r == 4
 
-    r = space_index(Val(:C9),       dt)
+    r = space_index(Val(:C9), dt)
     @test r == 7.0
-    r = space_index(Val(:C9),       jd)
+    r = space_index(Val(:C9), jd)
     @test r == 7.0
-    
-    r = space_index(Val(:Cp),       dt)
+
+    r = space_index(Val(:Cp), dt)
     @test r == 1.7
-    r = space_index(Val(:Cp),       jd)
+    r = space_index(Val(:Cp), jd)
     @test r == 1.7
 
-    r = space_index(Val(:ISN),      dt)
+    r = space_index(Val(:ISN), dt)
     @test r == 181
-    r = space_index(Val(:ISN),      jd)
+    r = space_index(Val(:ISN), jd)
     @test r == 181
-    
-    r = space_index(Val(:ND),       dt)
+
+    r = space_index(Val(:ND), dt)
     @test r == 4
-    r = space_index(Val(:ND),       jd)
+    r = space_index(Val(:ND), jd)
     @test r == 4
 
     SpaceIndices.destroy()
-
 end
 
-@testset "Celestrak[ERRORS]" begin
+@testset "Celestrak [ERRORS]" begin
     SpaceIndices.init(SpaceIndices.Celestrak)
-    # The data starts 5 years back from Current Date
+
+    # The data starts on 1932-01-01.
     dt = DateTime(1931, 12, 31)
     jd = dt |> datetime2julian
 

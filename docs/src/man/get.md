@@ -48,7 +48,7 @@ The following space indices are currently supported:
 |                     | `C9`                  | Daily magnetic index on Cp basis                                   |                     |
 |                     | `ISN`                 | International sunspot number                                       |                     |
 |                     | `BSRN`                | Bartels solar rotation number                                      |                     |
-|                     | `ND`                  | Number of Days into Bartels Solar Rotation Cycle                   | Days                |
+|                     | `ND`                  | Number of days into Bartels solar rotation cycle                   | Days                |
 | `JB2008`            | `DTC`                 | Exospheric temperature variation caused by the Dst index           | K                   |
 |                     | `S10`                 | EUV index (26-34 nm) scaled to F10.7                               | 10⁻²² W / (M² ⋅ Hz) |
 |                     | `M10`                 | MG2 index scaled to F10.7                                          | 10⁻²² W / (M² ⋅ Hz) |

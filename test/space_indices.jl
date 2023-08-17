@@ -15,15 +15,25 @@
     dt = DateTime(2020, 6, 19, 8)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:F10obs), dt)
-    @test r ≈ 68.8
-    r = space_index(Val(:F10obs), jd)
-    @test r ≈ 68.8
-
     r = space_index(Val(:F10adj), dt)
     @test r ≈ 71.1
     r = space_index(Val(:F10adj), jd)
     @test r ≈ 71.1
+
+    r = space_index(Val(:F10adj_avg_center81), dt)
+    @test r ≈ 71.4
+    r = space_index(Val(:F10adj_avg_center81), jd)
+    @test r ≈ 71.4
+
+    r = space_index(Val(:F10adj_avg_last81), dt)
+    @test r ≈ 70.8
+    r = space_index(Val(:F10adj_avg_last81), jd)
+    @test r ≈ 70.8
+
+    r = space_index(Val(:F10obs), dt)
+    @test r ≈ 68.8
+    r = space_index(Val(:F10obs), jd)
+    @test r ≈ 68.8
 
     r = space_index(Val(:F10obs_avg_center81), dt)
     @test r ≈ 69.3
@@ -38,15 +48,25 @@
     dt = DateTime(2020, 6, 19, 7, 59, 59)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:F10obs), dt)
-    @test r ≈ 67.9
-    r = space_index(Val(:F10obs), jd)
-    @test r ≈ 67.9
-
     r = space_index(Val(:F10adj), dt)
     @test r ≈ 70.2
     r = space_index(Val(:F10adj), jd)
     @test r ≈ 70.2
+
+    r = space_index(Val(:F10adj_avg_center81), dt)
+    @test r ≈ 71.3
+    r = space_index(Val(:F10adj_avg_center81), jd)
+    @test r ≈ 71.3
+
+    r = space_index(Val(:F10adj_avg_last81), dt)
+    @test r ≈ 70.8
+    r = space_index(Val(:F10adj_avg_last81), jd)
+    @test r ≈ 70.8
+
+    r = space_index(Val(:F10obs), dt)
+    @test r ≈ 67.9
+    r = space_index(Val(:F10obs), jd)
+    @test r ≈ 67.9
 
     r = space_index(Val(:F10obs_avg_center81), dt)
     @test r ≈ 69.3
@@ -61,15 +81,25 @@
     dt = DateTime(2000, 6, 8, 8)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:F10obs), dt)
-    @test r ≈ 174.6
-    r = space_index(Val(:F10obs), jd)
-    @test r ≈ 174.6
-
     r = space_index(Val(:F10adj), dt)
     @test r ≈ 179.9
     r = space_index(Val(:F10adj), jd)
     @test r ≈ 179.9
+
+    r = space_index(Val(:F10adj_avg_center81), dt)
+    @test r ≈ 193.1
+    r = space_index(Val(:F10adj_avg_center81), jd)
+    @test r ≈ 193.1
+
+    r = space_index(Val(:F10adj_avg_last81), dt)
+    @test r ≈ 190.2
+    r = space_index(Val(:F10adj_avg_last81), jd)
+    @test r ≈ 190.2
+
+    r = space_index(Val(:F10obs), dt)
+    @test r ≈ 174.6
+    r = space_index(Val(:F10obs), jd)
+    @test r ≈ 174.6
 
     r = space_index(Val(:F10obs_avg_center81), dt)
     @test r ≈ 187.8
@@ -84,15 +114,25 @@
     dt = DateTime(2000, 6, 8, 7, 59, 59)
     jd = dt |> datetime2julian
 
-    r = space_index(Val(:F10obs), dt)
-    @test r ≈ 180.3
-    r = space_index(Val(:F10obs), jd)
-    @test r ≈ 180.3
-
     r = space_index(Val(:F10adj), dt)
     @test r ≈ 185.8
     r = space_index(Val(:F10adj), jd)
     @test r ≈ 185.8
+
+    r = space_index(Val(:F10adj_avg_center81), dt)
+    @test r ≈ 192.1
+    r = space_index(Val(:F10adj_avg_center81), jd)
+    @test r ≈ 192.1
+
+    r = space_index(Val(:F10adj_avg_last81), dt)
+    @test r ≈ 190.5
+    r = space_index(Val(:F10adj_avg_last81), jd)
+    @test r ≈ 190.5
+
+    r = space_index(Val(:F10obs), dt)
+    @test r ≈ 180.3
+    r = space_index(Val(:F10obs), jd)
+    @test r ≈ 180.3
 
     r = space_index(Val(:F10obs_avg_center81), dt)
     @test r ≈ 186.8

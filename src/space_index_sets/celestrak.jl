@@ -102,11 +102,11 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         # Skip these to Simplify Parsing, Only Grab Dates with all Indices
         file[i, 27] == "PRM" && continue
 
-        push!(vdate,                  jd_k)
+        push!(vjd,                    jd_k)
         push!(vBSRN,                  trunc(file[i, 2]))
         push!(vND,                    trunc(file[i, 3]))
-        push!(vkp,                    _round_Kp.(Tuple(float(file[i, j]) for j in 4:11)))
-        push!(vap,                    Tuple(trunc(file[i, j]) for j in 13:20))
+        push!(vkp,                    _round_Kp.([float(file[i, j]) for j in 4:11]))
+        push!(vap,                    [trunc(file[i, j]) for j in 13:20])
         push!(vCp,                    float(file[i, 22]))
         push!(vC9,                    float(file[i, 23]))
         push!(vISN,                   trunc(file[i, 24]))
@@ -260,7 +260,7 @@ Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] f
 """
 function space_index(::Val{:F10obs}, jd::Number)
     obj    = @object(Celestrak)
-    knots  = obj.vdate 
+    knots  = obj.vjd 
     values = obj.vf107_obs
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
@@ -304,9 +304,9 @@ Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] a
 last 81 days from the `instant` (UTC).
 """
 function space_index(::Val{:F10obs_avg_last81}, jd::Number)
-    obj    = @object(Celestrak)
-    knots  = obj.vjd
-    values = obj.vf107_obs_avg_last81
+    obj      = @object(Celestrak)
+    knots    = obj.vjd
+    values   = obj.vf107_obs_avg_last81
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
     return constant_interpolation(knots, values, jd_shift)
@@ -319,9 +319,9 @@ Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] a
 days centered for the `instant` (UTC).
 """
 function space_index(::Val{:F10adj_avg_center81}, jd::Number)
-    obj    = @object(Celestrak)
-    knots  = obj.vjd
-    values = obj.vf107_adj_avg_center81
+    obj      = @object(Celestrak)
+    knots    = obj.vjd
+    values   = obj.vf107_adj_avg_center81
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
     return constant_interpolation(knots, values, jd_shift)
@@ -334,9 +334,9 @@ Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] a
 last 81 days from the `instant` (UTC).
 """
 function space_index(::Val{:F10adj_avg_last81}, jd::Number)
-    obj    = @object(Celestrak)
-    knots  = obj.vjd
-    values = obj.vf107_adj_avg_last81
+    obj      = @object(Celestrak)
+    knots    = obj.vjd
+    values   = obj.vf107_adj_avg_last81
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
     return constant_interpolation(knots, values, jd_shift)

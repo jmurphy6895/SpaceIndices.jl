@@ -7,7 +7,7 @@ makedocs(
         prettyurls = !("local" in ARGS),
         canonical = "https://juliaspace.github.io/SpaceIndices.jl/stable/",
     ),
-    sitename = "Space Indices",
+    sitename = "SpaceIndices.jl",
     authors = "Ronan Arraes Jardim Chagas",
     pages = [
         "Home" => "index.md",

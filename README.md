@@ -11,41 +11,38 @@ This package allows to automatically fetch and parse space indices.
 
 The space index sets supported in this version are:
 
-| **Space Index Set** | **File**                          | **Expiry period**  | **Information**                                             |
-|:--------------------|:----------------------------------|:-------------------|:------------------------------------------------------------|
-| `Celestrak`         | `SW-All.csv`                      | 1 day              | F10.7 flux data (observed and adjusted). Kp and Ap an       |
-|                     |                                   |                    | Derived indices. Some Sun Indicies.                         |
-|                     |                                   |                    | Historic and Predicted for all.                             |
-| `JB2008`            | `DTCFILE.TXT`                     | 1 day              | Exospheric temperature variation caused by the Dst index.   |
-|                     | `SOLFSMY.TXT`                     | 1 day              | Indices necessary for the JB2008 atmospheric model.         |
+| **Space Index Set** | **File**      | **Expiry period** | **Information**                                                |
+|:--------------------|:--------------|:------------------|:---------------------------------------------------------------|
+| `Celestrak`         | `SW-All.csv`  | 1 day             | F10.7, AP, KP, ISN, C9, Cp, ND, BSRN (historic and predicted). |
+| `JB2008`            | `DTCFILE.TXT` | 1 day             | Exospheric temperature variation caused by the Dst index.      |
+|                     | `SOLFSMY.TXT` | 1 day             | Indices necessary for the JB2008 atmospheric model.            |
 
 Those sets provide the following indices:
 
-
-| **Space Index Set** | **Index**              | **Description**                                                        | **Unit**           |
-|:--------------------|:-----------------------|:-----------------------------------------------------------------------|:-------------------|
-| `Celestrak`         | `F10obs`               | Observed F10.7 (10.7-cm solar flux)                                    | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `F10adj`               | Adjusted F10.7 (10.7-cm solar flux)                                    | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `f107_obs_avg_center81`| Observed F10.7 (10.7-cm solar flux) averaged over 81 days centered     | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `f107_obs_avg_last81`  | Observed F10.7 (10.7-cm solar flux) averaged over 81 last days         | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `f107_adj_avg_center81`| Observed F10.7 (10.7-cm solar flux) averaged over 81 days centered     | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `f107_adj_avg_last81`  | Observed F10.7 (10.7-cm solar flux) averaged over 81 last days         | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `Ap`                   | Ap index computed every three hours.                                   |                    |
-|                     | `Ap_daily`             | Daily Ap index.                                                        |                    |
-|                     | `Kp`                   | Kp index computed every three hours.                                   |                    |
-|                     | `Kp_daily`             | Daily Kp index.                                                        |                    |
-|                     | `Cp`                   | Daily Planetary Character Figure                                       |                    |
-|                     | `C9`                   | Daily Magnetic Index on Cp Basis                                       |                    |
-|                     | `ISN`                  | International Sunspot Number                                           |                    |
-|                     | `BSRN`                 | Bartels Solar Rotation Number                                          |                    |
-|                     | `ND`                   | Number of Days into Bartels Solar Rotation Cycle                       | Days               |
-| `JB2008`            | `DTC`                  | Exospheric temperature variation caused by the Dst index.              | K                  |
-|                     | `S10`                  | EUV index (26-34 nm) scaled to F10.7                                   | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `M10`                  | MG2 index scaled to F10.7.                                             | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `Y10`                  | Solar X-ray & Lya index scaled to F10.7                                | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `S81a`                 | 81-day averaged EUV index (26-34 nm) scaled to F10.7                   | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `M81a`                 | 81-day averaged MG2 index scaled to F10.7.                             | 10⁻²² W / (M² ⋅ Hz) |
-|                     | `Y81a`                 | 81-day averaged solar X-ray & Lya index scaled to F10.7                | 10⁻²² W / (M² ⋅ Hz) |
+| **Space Index Set** | **Index**             | **Description**                                                    | **Unit**            |
+|:--------------------|:----------------------|:-------------------------------------------------------------------|:--------------------|
+| `Celestrak`         | `F10obs`              | Observed F10.7 (10.7-cm solar flux)                                | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `F10obs_avg_center81` | Observed F10.7 (10.7-cm solar flux) averaged over 81 days centered | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `F10obs_avg_last81`   | Observed F10.7 (10.7-cm solar flux) averaged over 81 last days     | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `F10adj`              | Adjusted F10.7 (10.7-cm solar flux)                                | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `F10adj_avg_center81` | Observed F10.7 (10.7-cm solar flux) averaged over 81 days centered | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `F10adj_avg_last81`   | Observed F10.7 (10.7-cm solar flux) averaged over 81 last days     | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `Ap`                  | Ap index computed every three hours                                |                     |
+|                     | `Ap_daily`            | Daily Ap index                                                     |                     |
+|                     | `Kp`                  | Kp index computed every three hours                                |                     |
+|                     | `Kp_daily`            | Daily Kp index                                                     |                     |
+|                     | `Cp`                  | Daily planetary character figure                                   |                     |
+|                     | `C9`                  | Daily magnetic index on Cp basis                                   |                     |
+|                     | `ISN`                 | International sunspot number                                       |                     |
+|                     | `BSRN`                | Bartels solar rotation number                                      |                     |
+|                     | `ND`                  | Number of days into Bartels solar rotation cycle                   | Days                |
+| `JB2008`            | `DTC`                 | Exospheric temperature variation caused by the Dst index           | K                   |
+|                     | `S10`                 | EUV index (26-34 nm) scaled to F10.7                               | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `M10`                 | MG2 index scaled to F10.7                                          | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `Y10`                 | Solar X-ray & Lya index scaled to F10.7                            | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `S81a`                | 81-day averaged EUV index (26-34 nm) scaled to F10.7               | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `M81a`                | 81-day averaged MG2 index scaled to F10.7                          | 10⁻²² W / (M² ⋅ Hz) |
+|                     | `Y81a`                | 81-day averaged solar X-ray & Lya index scaled to F10.7            | 10⁻²² W / (M² ⋅ Hz) |
 
 ## Installation
 

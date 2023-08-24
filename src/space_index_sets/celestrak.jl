@@ -3,12 +3,13 @@
 # Description
 # ==========================================================================================
 #
-#   Space index file: SW-Last5Years.csv
+#   Space index file: SW-All.csv
 #   Default URL: https://celestrak.org/SpaceData/SW-All.csv
 #
-#   This file stores the historic and predicted Geomagnetic and Solar Flux data used in 
-#   space weather models. Documentation can be found at 
-#   https://celestrak.org/SpaceData/SpaceWx-format.php
+#   This file stores the historic and predicted geomagnetic and solar flux data used in
+#   space weather models. Documentation can be found at:
+#
+#       https://celestrak.org/SpaceData/SpaceWx-format.php
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -40,13 +41,6 @@ end
 
 expiry_periods(::Type{Celestrak}) = [Day(1)]
 
-"""
-Celestrak Mulitples Kp by 10 and rounds to the nearest integer this puts it back
-"""
-function roundKp(x::Float64)
-    round(round((x / 10.0) * 3) * 1/3; digits=3)
-end
-
 function parse_files(::Type{Celestrak}, filepaths::Vector{String})
     # We only have one file here.
     filepath = first(filepaths)
@@ -73,7 +67,7 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
 
     file = readdlm(filepath, ','; skipstart=1)
 
-    for i ∈ 1:size(file)[1]
+    for i in 1:size(file)[1]
 
         # The Julian day of the data will be computed at noon to allow using the
         # nearest-neighbor algorithm in the interpolations.
@@ -106,25 +100,23 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         jd_k_1 = jd_k
 
         # Skip these to Simplify Parsing, Only Grab Dates with all Indices
-        if file[i, 27] == "PRM"
-            continue
-        end
+        file[i, 27] == "PRM" && continue
 
-        push!(vjd,                      jd_k)
-        push!(vBSRN,                    trunc(file[i, 2]))
-        push!(vND,                      trunc(file[i, 3]))
-        push!(vkp,                      roundKp.(reduce(vcat, float(file[i, j]) for j∈4:11)))
-        push!(vap,                      reduce(vcat, trunc(file[i, j]) for j∈13:20))
-        push!(vCp,                      float(file[i, 22]))
-        push!(vC9,                      float(file[i, 23]))
-        push!(vISN,                     trunc(file[i, 24]))
-        push!(vap_daily,                trunc(file[i, 21]))
-        push!(vf107_obs,                float(file[i, 25]))
-        push!(vf107_adj,                float(file[i, 26]))
-        push!(vf107_obs_avg_center81,   float(file[i, 28]))
-        push!(vf107_obs_avg_last81,     float(file[i, 29]))
-        push!(vf107_adj_avg_center81,   float(file[i, 30]))
-        push!(vf107_adj_avg_last81,     float(file[i, 31]))
+        push!(vdate,                  jd_k)
+        push!(vBSRN,                  trunc(file[i, 2]))
+        push!(vND,                    trunc(file[i, 3]))
+        push!(vkp,                    _round_Kp.(Tuple(float(file[i, j]) for j in 4:11)))
+        push!(vap,                    Tuple(trunc(file[i, j]) for j in 13:20))
+        push!(vCp,                    float(file[i, 22]))
+        push!(vC9,                    float(file[i, 23]))
+        push!(vISN,                   trunc(file[i, 24]))
+        push!(vap_daily,              trunc(file[i, 21]))
+        push!(vf107_obs,              float(file[i, 25]))
+        push!(vf107_adj,              float(file[i, 26]))
+        push!(vf107_obs_avg_center81, float(file[i, 28]))
+        push!(vf107_obs_avg_last81,   float(file[i, 29]))
+        push!(vf107_adj_avg_center81, float(file[i, 30]))
+        push!(vf107_adj_avg_last81,   float(file[i, 31]))
 
     end
 
@@ -143,8 +135,8 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         vf107_obs_avg_center81,
         vf107_obs_avg_last81,
         vf107_adj_avg_center81,
-        vf107_adj_avg_last81)
-
+        vf107_adj_avg_last81
+    )
 end
 
 @register Celestrak
@@ -176,7 +168,7 @@ end
 """
     space_index(::Val{:Kp}, jd::Number) -> NTuple{8, Float64}
 
-    Get the Kp index for the day at `instant` compute every three hours.
+Get the Kp index for the day at `instant` compute every three hours.
 """
 function space_index(::Val{:Kp}, jd::Number)
     obj    = @object(Celestrak)
@@ -188,7 +180,7 @@ end
 """
     space_index(::Val{:Ap}, jd::Number) -> NTuple{8, Float64}
 
-    Get the Ap index for the day at `instant` compute every three hours.
+Get the Ap index for the day at `instant` compute every three hours.
 """
 function space_index(::Val{:Ap}, jd::Number)
     obj    = @object(Celestrak)
@@ -268,7 +260,7 @@ Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] f
 """
 function space_index(::Val{:F10obs}, jd::Number)
     obj    = @object(Celestrak)
-    knots  = obj.vjd 
+    knots  = obj.vdate 
     values = obj.vf107_obs
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
@@ -293,8 +285,8 @@ end
 """
     space_index(::Val{:F10obs_avg_center81}, jd::Number) -> Float64
 
-Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over 81 days centered for the `instant`
-(UTC).
+Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over 81
+days centered for the `instant` (UTC).
 """
 function space_index(::Val{:F10obs_avg_center81}, jd::Number)
     obj    = @object(Celestrak)
@@ -308,8 +300,8 @@ end
 """
     space_index(::Val{:F10obs_avg_last81}, jd::Number) -> Float64
 
-Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over the last 81 days for the `instant`
-(UTC).
+Get the observed F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over the
+last 81 days from the `instant` (UTC).
 """
 function space_index(::Val{:F10obs_avg_last81}, jd::Number)
     obj    = @object(Celestrak)
@@ -323,8 +315,8 @@ end
 """
     space_index(::Val{:F10adj_avg_center81}, jd::Number) -> Float64
 
-Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over 81 days centered for the `instant`
-(UTC).
+Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over 81
+days centered for the `instant` (UTC).
 """
 function space_index(::Val{:F10adj_avg_center81}, jd::Number)
     obj    = @object(Celestrak)
@@ -338,8 +330,8 @@ end
 """
     space_index(::Val{:F10adj_avg_last81}, jd::Number) -> Float64
 
-Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over the last 81 days for the `instant`
-(UTC).
+Get the adjusted F10.7 index (10.7-cm solar flux) [10⁻²² W / (M² ⋅ Hz)] averaged over the
+last 81 days from the `instant` (UTC).
 """
 function space_index(::Val{:F10adj_avg_last81}, jd::Number)
     obj    = @object(Celestrak)
@@ -348,4 +340,17 @@ function space_index(::Val{:F10adj_avg_last81}, jd::Number)
     # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
     jd_shift = jd - 8.0/24.0
     return constant_interpolation(knots, values, jd_shift)
+end
+
+############################################################################################
+#                                    Private Functions
+############################################################################################
+
+"""
+    _round_Kp(x::Float64)
+
+Celestrak mulitples Kp by 10 and rounds to the nearest integer this puts it back.
+"""
+function _round_Kp(x::Float64)
+    return round(round((x / 10.0) * 3) * 1/3; digits=3)
 end

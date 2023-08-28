@@ -92,7 +92,7 @@ end
 
 # Perform a interval binary search of `x` in `v`. It means that this function returns `k`
 # such that `v[k] <= x < v[k + 1]`.
-function _binary_search(v::AbstractVector{T}, x::T) where T
+function _binary_search(v::AbstractVector, x)
     num_elements = length(v)
     low  = 1
     high = num_elements

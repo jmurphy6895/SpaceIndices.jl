@@ -18,7 +18,7 @@
 ############################################################################################
 
 struct Celestrak <: SpaceIndexSet
-    vjd::Vector{Number}
+    vjd::Vector{Float64}
     vBSRN::Vector{Int}
     vND::Vector{Int}
     vkp::Vector{Vector{Float64}}

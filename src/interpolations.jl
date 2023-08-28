@@ -11,21 +11,25 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 """
-    constant_interpolation(knots::Vector{Date}, values::AbstractVector, x::Date) -> eltype(values)
+    constant_interpolation(knots::AbstractVector, values::AbstractVector, x) -> eltype(values)
 
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
 """
-function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVector, x::Tk) where Tk
+function constant_interpolation(knots::AbstractVector, values::AbstractVector, x)
     # First, we need to verify if `x` is inside the domain.
-    num_knots = length(knots)
     knots_beg = first(knots)
     knots_end = last(knots)
 
     if !(knots_beg <= x <= knots_end)
+
+        x_dt = julian2datetime(x)
+        knots_beg_dt = julian2datetime(knots_beg)
+        knots_end_dt = julian2datetime(knots_end)
+
         throw(ArgumentError("""
-            There is no available data for x = $(x)!
-            The available interval is: x ∈ [$knots_beg, $knots_end]."""
+            There is no available data for x = $(x_dt)!
+            The available interval is: x ∈ [$knots_beg_dt, $knots_end_dt]."""
         ))
     end
 
@@ -37,25 +41,25 @@ function constant_interpolation(knots::AbstractVector{Tk}, values::AbstractVecto
 end
 
 """
-    linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
+    linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
 
 Perform a linear interpolation at `x` of `values` evaluated at `knots`.
 """
-function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{Tv}, x::Tk) where {Tk, Tv}
+function linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
     # First, we need to verify if `x` is inside the domain.
-    num_knots = length(knots)
     knots_beg = first(knots)
     knots_end = last(knots)
 
     if !(knots_beg <= x <= knots_end)
+        x_dt = julian2datetime(x)
+        knots_beg_dt = julian2datetime(knots_beg)
+        knots_end_dt = julian2datetime(knots_end)
+
         throw(ArgumentError("""
-            There is no available data for x = $(x)!
-            The available interval is: x ∈ [$knots_beg -- $knots_end]."""
+            There is no available data for x = $(x_dt)!
+            The available interval is: x ∈ [$knots_beg_dt -- $knots_end_dt]."""
         ))
     end
-
-    # Type of the returned value.
-    T = float(Tv)
 
     # Find the vector index related to the request interval using binary search. We can
     # apply this algorithm because we assume that `knots` are unique and increasing.
@@ -63,20 +67,20 @@ function linear_interpolation(knots::AbstractVector{Tk}, values::AbstractVector{
 
     # If we are at the knot precisely, just return it.
     if x == knots[id]
-        return Tv(values[id])
+        return values[id]
 
     else
         # Here, we need to perform the interpolation using the adjacent knots.
         x₀ = knots[id]
         x₁ = knots[id + 1]
 
-        y₀ = T(values[id])
-        y₁ = T(values[id + 1])
+        y₀ = values[id]
+        y₁ = values[id + 1]
 
         Δy = y₁ - y₀
         Δx = x₁ - x₀
 
-        y  = y₀ + Δy * T((x - x₀) / Δx)
+        y  = y₀ + Δy * (x - x₀) / Δx
 
         return y
     end
@@ -88,7 +92,7 @@ end
 
 # Perform a interval binary search of `x` in `v`. It means that this function returns `k`
 # such that `v[k] <= x < v[k + 1]`.
-function _binary_search(v::AbstractVector{T}, x::T) where T
+function _binary_search(v::AbstractVector, x)
     num_elements = length(v)
     low  = 1
     high = num_elements

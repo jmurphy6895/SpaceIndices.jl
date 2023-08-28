@@ -18,11 +18,11 @@
 
 struct JB2008 <: SpaceIndexSet
     # File: DTCFILE.TXT
-    vdatetime::Vector{Number}
+    vdatetime::Vector{Float64}
     vdtc::Vector{Float64}
 
     # File: SOLFSMY.TXT
-    vdate::Vector{Number}
+    vdate::Vector{Float64}
     vf10::Vector{Float64}
     vf81a::Vector{Float64}
     vs10::Vector{Float64}

@@ -1,6 +1,18 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 1.1.1
+-------------
+
+- ![Bugfix][badge-bugfix] We can now process the file `SW-All.csv` if there are invalid
+  lines. In those cases, the lines will be rejected. (Issue [#4][gh-issue-4])
+- ![Enhancement][badge-enhancement] We now use the Julian Day instead of `DateTime` as the
+  internal date representation. Notice that the public API has not changed. This
+  modification made SpaceIndices.jl compatible with automatic differentiation packages.
+  (PR [#3][gh-pr-3])
+- ![Info][badge-info] The Kp and Ap vectors returned by `space_index` are now `Vector`s
+  instead of `Tuple`s.
+
 Version 1.1.0
 -------------
 
@@ -38,4 +50,7 @@ Version 0.1.0
 [badge-bugfix]: https://img.shields.io/badge/Bugfix-purple.svg
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
+[gh-issue-4]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/4
+
 [gh-pr-2]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/2
+[gh-pr-3]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/3

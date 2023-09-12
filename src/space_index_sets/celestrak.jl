@@ -102,22 +102,43 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         # Skip these to Simplify Parsing, Only Grab Dates with all Indices
         file[i, 27] == "PRM" && continue
 
-        push!(vjd,                    jd_k)
-        push!(vBSRN,                  trunc(file[i, 2]))
-        push!(vND,                    trunc(file[i, 3]))
-        push!(vkp,                    _round_Kp.([float(file[i, j]) for j in 4:11]))
-        push!(vap,                    [trunc(file[i, j]) for j in 13:20])
-        push!(vCp,                    float(file[i, 22]))
-        push!(vC9,                    float(file[i, 23]))
-        push!(vISN,                   trunc(file[i, 24]))
-        push!(vap_daily,              trunc(file[i, 21]))
-        push!(vf107_obs,              float(file[i, 25]))
-        push!(vf107_adj,              float(file[i, 26]))
-        push!(vf107_obs_avg_center81, float(file[i, 28]))
-        push!(vf107_obs_avg_last81,   float(file[i, 29]))
-        push!(vf107_adj_avg_center81, float(file[i, 30]))
-        push!(vf107_adj_avg_last81,   float(file[i, 31]))
+        # If we get errors during parsing, we skip this data.
+        try
+            BSRN_k                  = trunc(file[i, 2])
+            ND_k                    = trunc(file[i, 3])
+            kp_k                    = _round_Kp.([float(file[i, j]) for j in 4:11])
+            ap_k                    = [trunc(file[i, j]) for j in 13:20]
+            Cp_k                    = float(file[i, 22])
+            C9_k                    = float(file[i, 23])
+            ISN_k                   = trunc(file[i, 24])
+            ap_daily_k              = trunc(file[i, 21])
+            f107_obs_k              = float(file[i, 25])
+            f107_adj_k              = float(file[i, 26])
+            f107_obs_avg_center81_k = float(file[i, 28])
+            f107_obs_avg_last81_k   = float(file[i, 29])
+            f107_adj_avg_center81_k = float(file[i, 30])
+            f107_adj_avg_last81_k   = float(file[i, 31])
 
+            # Notice that if we reach this point, all the parsing happened correctly. Thus,
+            # we can consider that the operation that adds data to the vectors is "atomic".
+            push!(vjd,                    jd_k)
+            push!(vBSRN,                  BSRN_k)
+            push!(vND,                    ND_k)
+            push!(vkp,                    kp_k)
+            push!(vap,                    ap_k)
+            push!(vCp,                    Cp_k)
+            push!(vC9,                    C9_k)
+            push!(vISN,                   ISN_k)
+            push!(vap_daily,              ap_daily_k)
+            push!(vf107_obs,              f107_obs_k)
+            push!(vf107_adj,              f107_adj_k)
+            push!(vf107_obs_avg_center81, f107_obs_avg_center81_k)
+            push!(vf107_obs_avg_last81,   f107_obs_avg_last81_k)
+            push!(vf107_adj_avg_center81, f107_adj_avg_center81_k)
+            push!(vf107_adj_avg_last81,   f107_adj_avg_last81_k)
+        catch
+            @debug "The line $i in the file $(filepaths |> first |> basename) could not be parsed."
+        end
     end
 
     return Celestrak(

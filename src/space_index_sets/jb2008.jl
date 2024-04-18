@@ -38,8 +38,8 @@ end
 ############################################################################################
 
 urls(::Type{JB2008}) = [
-    "http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT"
-    "http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT"
+    "https://sol.spacenvironment.net/JB2008/indices/DTCFILE.TXT"
+    "https://sol.spacenvironment.net/JB2008/indices/SOLFSMY.TXT"
 ]
 
 expiry_periods(::Type{JB2008}) = [Day(1), Day(1)]

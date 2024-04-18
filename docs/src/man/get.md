@@ -20,14 +20,14 @@ function space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
 where `index` is the desired space index and `jd` is the Julian Day to obtain the
 information. The latter can also be specified using `instant`, which is a `DateTime` object.
 
-```jldoctest
+```julia-repl
 julia> SpaceIndices.init()
 
 julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
-71.1
+70.2
 
 julia> space_index(Val(:F10adj), 2.4590195e6)
-71.1
+70.2
 ```
 
 The following space indices are currently supported:

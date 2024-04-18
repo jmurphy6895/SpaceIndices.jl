@@ -1,6 +1,12 @@
 SpaceIndices.jl Changelog
 =========================
 
+Verison 1.1.2
+-------------
+
+- ![Bugfix][badge-bugfix] We updated the URLs of the space indices related to the JB2008
+  atmospheric model. (Issue [#5][gh-issue-5])
+
 Version 1.1.1
 -------------
 
@@ -51,6 +57,7 @@ Version 0.1.0
 [badge-info]: https://img.shields.io/badge/Info-gray.svg
 
 [gh-issue-4]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/4
+[gh-issue-5]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/5
 
 [gh-pr-2]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/2
 [gh-pr-3]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/3

@@ -32,16 +32,29 @@ If the user wants to initialize only one space index set, they can pass it to th
 function:
 
 ```julia
-function SpaceIndices.init(::Type{T}; force_download::Bool = true) where T<:SpaceIndexSet -> Nothing
+function SpaceIndices.init(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
 ```
 
-where `T` must be the space index set. In this case, the user have access to the keyword
-`force_download`. If it is `true`, the remote files will be download regardless their
-timestamp.
+where `T` must be the space index set. In this case, the user have access to the following
+keywords:
+
+- `force_download::Bool`: If `true`, the remote files will be downloaded regardless of their
+    timestamps.
+    (**Default** = `false`)
+- `filepaths::Union{Nothing, Vector{String}}`: If it is `nothing`, the function will
+    download the space index files from the locations specified in the [`urls`](@ref)
+    API function. However, the user can pass a vector with the file locations, which will be
+    used instead of downloading the data. In this case, the user must provide all the files
+    in the space index set `T`.
+    (**Default** = `nothing`)
 
 ```julia-repl
 julia> SpaceIndices.init()
 [ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
 [ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
 [ Info: Downloading the file 'SW-All.csv' from 'https://celestrak.org/SpaceData/SW-All.csv'...
+```
+
+```julia-repl
+julia> SpaceIndices.init(SpaceIndices.Celestrak; filepaths = ["./SW-All.csv"])
 ```

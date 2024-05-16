@@ -1,6 +1,14 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 1.2.0
+-------------
+
+- ![Feature][badge-feature] We can pass the keyword `filepaths` to the function
+  `SpaceIndices.init` when initializing individual sets to specify local files with the
+  indices. Hence, the algorithm will use those paths instead of downloading the indices from
+  the locations in `urls` function. (Issue [#6][gh-issue-6])
+
 Verison 1.1.2
 -------------
 
@@ -58,6 +66,7 @@ Version 0.1.0
 
 [gh-issue-4]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/4
 [gh-issue-5]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/5
+[gh-issue-6]: https://github.com/JuliaSpace/SpaceIndices.jl/issues/6
 
 [gh-pr-2]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/2
 [gh-pr-3]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/3

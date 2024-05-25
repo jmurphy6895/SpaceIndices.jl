@@ -305,9 +305,9 @@ end
     @test r ≈ 58.4
 
     r = space_index(Val(:M10), dt)
-    @test r ≈ 72.7
+    @test r ≈ 72.8
     r = space_index(Val(:M10), jd)
-    @test r ≈ 72.7
+    @test r ≈ 72.8
 
     r = space_index(Val(:M81a), dt)
     @test r ≈ 73.9

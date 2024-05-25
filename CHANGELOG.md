@@ -1,6 +1,11 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 1.2.2
+-------------
+
+- ![Bugfix][badge-bugfix] We fixed a bug that was failing the documentation build process.
+
 Version 1.2.1
 -------------
 

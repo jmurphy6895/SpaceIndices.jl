@@ -1,17 +1,19 @@
-Initialization of Space Indices
-===============================
+# Initialization of Space Indices
 
 ```@meta
 CurrentModule = SpaceIndices
-DocTestSetup = quote
-    using SpaceIndices
-end
+```
+
+```@setup init
+using SpaceIndices
+using Scratch
+Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 The files of all the registered space indices can be automatically downloaded using:
 
 ```julia
-function SpaceIndices.init(; kwargs...) -> Nothing
+SpaceIndices.init(; kwargs...) -> Nothing
 ```
 
 If a file exists, the function checks if its expiry period has passed. If so, it downloads
@@ -32,7 +34,7 @@ If the user wants to initialize only one space index set, they can pass it to th
 function:
 
 ```julia
-function SpaceIndices.init(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
+SpaceIndices.init(::Type{T}; kwargs...) where T<:SpaceIndexSet -> Nothing
 ```
 
 where `T` must be the space index set. In this case, the user have access to the following
@@ -48,11 +50,8 @@ keywords:
     in the space index set `T`.
     (**Default** = `nothing`)
 
-```julia-repl
-julia> SpaceIndices.init()
-[ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
-[ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
-[ Info: Downloading the file 'SW-All.csv' from 'https://celestrak.org/SpaceData/SW-All.csv'...
+```@repl init
+SpaceIndices.init()
 ```
 
 ```julia-repl

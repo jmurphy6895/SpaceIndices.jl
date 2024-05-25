@@ -1,11 +1,7 @@
-SpaceIndices.jl API
-===================
+# SpaceIndices.jl API
 
 ```@meta
 CurrentModule = SpaceIndices
-DocTestSetup = quote
-    using SpaceIndices
-end
 ```
 
 This package defines an API to allow user to defin new space indices. We describe this API
@@ -91,8 +87,7 @@ function SpaceIndices.filenames(::Type{T}) where T<:SpaceIndexFile -> Vector{Str
 ```
 
 This function can return a `Vector{String}` with the names of the remote files. The system
-will used this information to save the data in the package scratch space. 
-For example:
+will used this information to save the data in the package scratch space. For example:
 
 ```julia
 SpaceIndices.filenames(::Type{MySpaceIndex}) = ["my_space_file.txt"]

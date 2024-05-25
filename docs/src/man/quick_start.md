@@ -1,11 +1,13 @@
-Quick Start
-===========
+# Quick Start
 
 ```@meta
 CurrentModule = SpaceIndices
-DocTestSetup = quote
-    using SpaceIndices
-end
+```
+
+```@setup quick_start
+using SpaceIndices
+using Scratch
+Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 This quick tutorial will show how to use **SpaceIndicies.jl** to obtain the F10.7 index at
@@ -13,16 +15,12 @@ This quick tutorial will show how to use **SpaceIndicies.jl** to obtain the F10.
 
 First, we need to initialize all the space indices:
 
-```julia-repl
-julia> SpaceIndices.init()
-[ Info: Downloading the file 'DTCFILE.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT'...
-[ Info: Downloading the file 'SOLFSMY.TXT' from 'http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT'...
-[ Info: Downloading the file 'SW-All.csv' from 'https://celestrak.org/SpaceData/SW-All.csv'...
+```@repl quick_start
+SpaceIndices.init()
 ```
 
 Afterward, we can obtain the desired space index using:
 
-```julia-repl
-julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
-71.1
+```@repl quick_start
+space_index(Val(:F10adj), DateTime(2020, 6, 19))
 ```

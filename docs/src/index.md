@@ -1,5 +1,4 @@
-SpaceIndices.jl
-===============
+# SpaceIndices.jl
 
 This package allows to automatically fetch and parse space indices.
 
@@ -15,7 +14,7 @@ The space index sets supported in this version are:
 
 This package can be installed using:
 
-``` julia
+```julia-repl
 julia> using Pkg
 julia> Pkg.add("SpaceIndices")
 ```

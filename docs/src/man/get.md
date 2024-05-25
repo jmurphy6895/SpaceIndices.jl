@@ -1,33 +1,33 @@
-Obtaining the Space Indices
-===========================
+# Obtaining the Space Indices
 
 ```@meta
 CurrentModule = SpaceIndices
-DocTestSetup = quote
-    using Dates
-    using SpaceIndices
-end
+```
+
+```@repl get
+using Dates
+using SpaceIndices
+using Scratch
+Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 After the initialization shown in [Initialization of Space Indices](@ref), the user can
 obtain the space index value using the function:
 
 ```julia
-function space_index(::Val{:index}, jd::Number; kwargs...) -> Number
-function space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
+space_index(::Val{:index}, jd::Number; kwargs...) -> Number
+space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
 ```
 
 where `index` is the desired space index and `jd` is the Julian Day to obtain the
 information. The latter can also be specified using `instant`, which is a `DateTime` object.
 
-```julia-repl
-julia> SpaceIndices.init()
+```@repl get
+SpaceIndices.init()
 
-julia> space_index(Val(:F10adj), DateTime(2020, 6, 19))
-70.2
+space_index(Val(:F10adj), DateTime(2020, 6, 19))
 
-julia> space_index(Val(:F10adj), 2.4590195e6)
-70.2
+space_index(Val(:F10adj), 2.4590195e6)
 ```
 
 The following space indices are currently supported:
@@ -56,4 +56,3 @@ The following space indices are currently supported:
 |                     | `S81a`                | 81-day averaged EUV index (26-34 nm) scaled to F10.7               | 10⁻²² W / (M² ⋅ Hz) |
 |                     | `M81a`                | 81-day averaged MG2 index scaled to F10.7                          | 10⁻²² W / (M² ⋅ Hz) |
 |                     | `Y81a`                | 81-day averaged solar X-ray & Lya index scaled to F10.7            | 10⁻²² W / (M² ⋅ Hz) |
-

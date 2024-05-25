@@ -1,6 +1,14 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 1.2.1
+-------------
+
+- ![Enhancement][badge-enhancement] The package now uses `Downloads.download` instead of
+  `Base.download` to download the space index files.
+- ![Enhancement][badge-enhancement] Minor source-code updates.
+- ![Enhancement][badge-enhancement] We updated the documentation.
+
 Version 1.2.0
 -------------
 

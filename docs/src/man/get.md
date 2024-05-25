@@ -7,8 +7,7 @@ CurrentModule = SpaceIndices
 ```@repl get
 using Dates
 using SpaceIndices
-using Scratch
-Scratch.clear_scratchspaces!(SpaceIndices)
+SpaceIndices.Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 After the initialization shown in [Initialization of Space Indices](@ref), the user can

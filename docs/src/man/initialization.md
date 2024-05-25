@@ -6,8 +6,7 @@ CurrentModule = SpaceIndices
 
 ```@setup init
 using SpaceIndices
-using Scratch
-Scratch.clear_scratchspaces!(SpaceIndices)
+SpaceIndices.Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 The files of all the registered space indices can be automatically downloaded using:

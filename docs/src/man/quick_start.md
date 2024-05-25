@@ -6,8 +6,7 @@ CurrentModule = SpaceIndices
 
 ```@setup quick_start
 using SpaceIndices
-using Scratch
-Scratch.clear_scratchspaces!(SpaceIndices)
+SpaceIndices.Scratch.clear_scratchspaces!(SpaceIndices)
 ```
 
 This quick tutorial will show how to use **SpaceIndicies.jl** to obtain the F10.7 index at

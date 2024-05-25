@@ -1,8 +1,11 @@
 module SpaceIndices
 
+using DelimitedFiles
+using Downloads
 using Reexport
 using Scratch
-using DelimitedFiles
+
+import Downloads: download
 
 @reexport using Dates
 @reexport using OptionalData

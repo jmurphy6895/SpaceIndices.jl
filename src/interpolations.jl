@@ -1,14 +1,11 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==========================================================================================
+# Implementation of simple interpolations used for the space indices.
 #
-#   Implementation of simple interpolations used for the space indices.
+# We do not need to import Interpolations.jl because the space indices require only very
+# simple interpolations (1D-constant and linear).
 #
-#   We do not need to import Interpolations.jl because the space indices require only very
-#   simple interpolations (1D-constant and linear).
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 """
     constant_interpolation(knots::AbstractVector, values::AbstractVector, x) -> eltype(values)
@@ -87,7 +84,7 @@ function linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
 end
 
 ############################################################################################
-#                                    Private Functions
+#                                    Private Functions                                     #
 ############################################################################################
 
 # Perform a interval binary search of `x` in `v`. It means that this function returns `k`

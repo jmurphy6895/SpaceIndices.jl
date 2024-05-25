@@ -1,14 +1,10 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#
-# Description
-# ==========================================================================================
+## Description #############################################################################
 #
 #   Tests related to the API to create new space indices.
 #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
-# Custom Space Index Set
-# ==========================================================================================
+# == Custom Space Index Set ================================================================
 #
 # We create here a custom space index set to obtain GPS leap seconds. The purpose is to test
 # if one can use the API to define custom space indices.
@@ -137,8 +133,7 @@ end
     ) match_mode = :any SpaceIndices.init(LeapSeconds)
 end
 
-# Dummy Space Index Set
-# ==========================================================================================
+# == Dummy Space Index Set =================================================================
 #
 # This dummy space index set is used only to test if the optional API function `filenames`
 # is working properly.

@@ -1,20 +1,17 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==========================================================================================
+# Space index file: SW-All.csv
+# Default URL: https://celestrak.org/SpaceData/SW-All.csv
 #
-#   Space index file: SW-All.csv
-#   Default URL: https://celestrak.org/SpaceData/SW-All.csv
+# This file stores the historic and predicted geomagnetic and solar flux data used in space
+# weather models. Documentation can be found at:
 #
-#   This file stores the historic and predicted geomagnetic and solar flux data used in
-#   space weather models. Documentation can be found at:
+#     https://celestrak.org/SpaceData/SpaceWx-format.php
 #
-#       https://celestrak.org/SpaceData/SpaceWx-format.php
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 ############################################################################################
-#                                        Structure
+#                                        Structure                                         #
 ############################################################################################
 
 struct Celestrak <: SpaceIndexSet
@@ -283,8 +280,9 @@ function space_index(::Val{:F10obs}, jd::Number)
     obj    = @object(Celestrak)
     knots  = obj.vjd 
     values = obj.vf107_obs
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 
@@ -298,8 +296,9 @@ function space_index(::Val{:F10adj}, jd::Number)
     obj    = @object(Celestrak)
     knots  = obj.vjd
     values = obj.vf107_adj
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 
@@ -313,8 +312,9 @@ function space_index(::Val{:F10obs_avg_center81}, jd::Number)
     obj    = @object(Celestrak)
     knots  = obj.vjd
     values = obj.vf107_obs_avg_center81
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 
@@ -328,8 +328,9 @@ function space_index(::Val{:F10obs_avg_last81}, jd::Number)
     obj      = @object(Celestrak)
     knots    = obj.vjd
     values   = obj.vf107_obs_avg_last81
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 
@@ -343,8 +344,9 @@ function space_index(::Val{:F10adj_avg_center81}, jd::Number)
     obj      = @object(Celestrak)
     knots    = obj.vjd
     values   = obj.vf107_adj_avg_center81
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 
@@ -358,8 +360,9 @@ function space_index(::Val{:F10adj_avg_last81}, jd::Number)
     obj      = @object(Celestrak)
     knots    = obj.vjd
     values   = obj.vf107_adj_avg_last81
-    # Shift 8 Hours to Move Center of Interval to Midnight Since F10.7 Measurement occurs at 20:00 UTC
-    jd_shift = jd - 8.0/24.0
+    # Shift 8 hours to move center of interval to midnight since F10.7 measurement occurs at
+    # 20:00 UTC.
+    jd_shift = jd - 8 / 24
     return constant_interpolation(knots, values, jd_shift)
 end
 

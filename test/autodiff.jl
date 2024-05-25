@@ -1,3 +1,9 @@
+## Description #############################################################################
+#
+# Tests related to capability to interact with auto-diff packages.
+#
+############################################################################################
+
 @testset "Forward Mode AD" begin
 
     SpaceIndices.init()

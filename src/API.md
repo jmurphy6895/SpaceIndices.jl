@@ -1,5 +1,4 @@
-API for Space Files
-===================
+# API for Space Files
 
 This document describes the API that must be followed for space index sets.
 
@@ -85,8 +84,7 @@ function SpaceIndices.filenames(::Type{T}) where T<:SpaceIndexFile -> Vector{Str
 ```
 
 This function can return a `Vector{String}` with the names of the remote files. The system
-will used this information to save the data in the package scratch space. 
-For example:
+will used this information to save the data in the package scratch space. For example:
 
 ```julia
 SpaceIndices.filenames(::Type{MySpaceIndex}) = ["my_space_file.txt"]
@@ -96,5 +94,6 @@ If this function is not defined, the filename will be obtained from the URL usin
 function `basename`.
 
 !!! warning
+
     All functions that return a `Vector` must return an array with **the same number of
     elements**.

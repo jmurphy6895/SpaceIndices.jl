@@ -1,11 +1,8 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==========================================================================================
+# Function to download files into scratch space.
 #
-#   Function to download files into scratch space.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 # Download the file in `url` to `filename` using the scratch space `key`. If
 # `force_download` is `true`, it will always download the file. Otherwise, it will avoid

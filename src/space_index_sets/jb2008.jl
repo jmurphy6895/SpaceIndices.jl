@@ -1,19 +1,16 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==========================================================================================
+# Space index set: JB2008
+# Remote files:
+#     - http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT
+#     - http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT
 #
-#   Space index set: JB2008
-#   Remote files:
-#       - http://sol.spacenvironment.net/jb2008/indices/DTCFILE.TXT
-#       - http://sol.spacenvironment.net/jb2008/indices/SOLFSMY.TXT
+# This set contains the space indices used for the JB2008 atmospheric model.
 #
-#   This set contains the space indices used for the JB2008 atmospheric model.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 ############################################################################################
-#                                        Structure
+#                                        Structure                                         #
 ############################################################################################
 
 struct JB2008 <: SpaceIndexSet
@@ -34,7 +31,7 @@ struct JB2008 <: SpaceIndexSet
 end
 
 ############################################################################################
-#                                           API
+#                                           API                                            #
 ############################################################################################
 
 urls(::Type{JB2008}) = [
@@ -154,7 +151,7 @@ function space_index(::Val{:Y81a}, date::Number)
 end
 
 ############################################################################################
-#                                    Private Functions
+#                                    Private Functions                                     #
 ############################################################################################
 
 # Parse the DTCFILE.TXT and return the interpolators.

@@ -1,11 +1,8 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+## Description #############################################################################
 #
-# Description
-# ==========================================================================================
+# Tests related with the initialization of space indices.
 #
-#   Tests related with the initialization of space indices.
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+############################################################################################
 
 @testset "Functions init_space_index_sets and init_space_index_set" begin
     # Initialize all space indices.
@@ -28,8 +25,7 @@
     @test SpaceIndices._OPDATA_CELESTRAK.data isa SpaceIndices.Celestrak
     SpaceIndices.destroy()
 
-    # Blocklist
-    # ======================================================================================
+    # == Blocklist =========================================================================
 
     SpaceIndices.init(; blocklist = [SpaceIndices.Celestrak])
     @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008

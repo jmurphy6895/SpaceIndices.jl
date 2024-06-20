@@ -6,6 +6,8 @@ using Logging
 using Scratch
 using SpaceIndices
 
+using ForwardDiff, Zygote, ReverseDiff
+
 @testset "Initilization" verbose = true begin
     include("./initialization.jl")
 end
@@ -21,3 +23,7 @@ end
 @testset "Interpolations" verbose = true begin
     include("./interpolations.jl")
 end
+
+@testset "Automatic Differentiation" verbose = true begin
+    include("./autodiff.jl")
+end 

@@ -101,7 +101,7 @@ urls
 
 """
     space_index(::Val{:index}, jd::Number; kwargs...) -> Number
-    space_index(::Val{:index}, instant::DateTime; kwargs...) -> Number
+    space_index(::Val{:index}, date::DateTime; kwargs...) -> Number
 
 Get the space `index` for the Julian day `jd` or the `instant`. The latter must be an object
 of type `DateTime`. `kwargs...` can be used to pass additional configuration for the space
@@ -109,8 +109,8 @@ index.
 """
 space_index
 
-function space_index(index::Val, jd::Number)
-    return space_index(index, julian2datetime(jd))
+function space_index(index::Val, date::DateTime)
+    return space_index(index, datetime2julian(date))
 end
 
 """

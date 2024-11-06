@@ -7,7 +7,34 @@ using Scratch
 using SpaceIndices
 
 using DifferentiationInterface
-using FiniteDiff, ForwardDiff, Zygote, ReverseDiff, Enzyme
+using FiniteDiff, ForwardDiff, Diffractor, Enzyme, Mooncake, PolyesterForwardDiff, ReverseDiff, Tracker, Zygote
+
+using JET, AllocCheck
+
+const _INDICES = [
+    :F10obs
+    :F10obs_avg_center81
+    :F10obs_avg_last81
+    :F10adj
+    :F10adj_avg_center81
+    :F10adj_avg_last81
+    :Ap
+    :Ap_daily
+    :Kp
+    :Kp_daily
+    :Cp
+    :C9
+    :ISN
+    :BSRN
+    :ND
+    :DTC
+    :S10
+    :M10
+    :Y10
+    :S81a
+    :M81a
+    :Y81a
+]
 
 @testset "Initilization" verbose = true begin
     include("./initialization.jl")
@@ -25,6 +52,10 @@ end
     include("./interpolations.jl")
 end
 
+@testset "Performance" verbose = true begin
+    include("./allocations.jl")
+end
+
 @testset "Automatic Differentiation" verbose = true begin
     include("./differentiability.jl")
-end 
+end

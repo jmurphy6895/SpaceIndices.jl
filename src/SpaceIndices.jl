@@ -4,6 +4,7 @@ using DelimitedFiles
 using Downloads
 using Reexport
 using Scratch
+using StaticArraysCore
 
 import Downloads: download
 

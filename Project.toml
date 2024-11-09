@@ -8,13 +8,10 @@ version = "1.2.2"
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
-DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
 Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-FiniteDiff = "6a86dc24-6348-571c-b903-95158fe2bd41"
 OptionalData = "fbd9d27c-2d1c-5c1c-99f2-7497d746985d"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 Scratch = "6c6a2e73-6563-6170-7368-637461726353"
-StaticArraysCore = "1e83bf80-4336-4d27-bf5d-d5a4f845583c"
 
 [compat]
 AllocCheck = "0.2"

@@ -3,75 +3,33 @@
 # Tests related to capability to interact with auto-diff packages.
 #
 ############################################################################################
-using SpaceIndices
-using DifferentiationInterface
-using Enzyme
-using FiniteDiff
-using Test
 
-_INDICES = [
-    :F10obs
-    :F10obs_avg_center81
-    :F10obs_avg_last81
-    :F10adj
-    :F10adj_avg_center81
-    :F10adj_avg_last81
-    :Ap
-    :Ap_daily
-    :Kp
-    :Kp_daily
-    :Cp
-    :C9
-    :ISN
-    :BSRN
-    :ND
-    :DTC
-    :S10
-    :M10
-    :Y10
-    :S81a
-    :M81a
-    :Y81a
-]
-
-_BACKENDS = (
-    #("ForwardDiff", AutoForwardDiff()),
-    #("Diffractor", AutoDiffractor()),
+const _BACKENDS = (
+    ("ForwardDiff", AutoForwardDiff()),
     ("Enzyme", AutoEnzyme()),
-    #("Mooncake", AutoMooncake(;config=nothing)),
-    #("PolyesterForwardDiff", AutoPolyesterForwardDiff())
-    #("ReverseDiff", AutoReverseDiff()),
-    #("Tracker", AutoTracker()),
-    #("Zygote", AutoZygote()),
+    ("Mooncake", AutoMooncake(;config=nothing)),
+    ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
+    ("ReverseDiff", AutoReverseDiff()),
+    ("Tracker", AutoTracker()),
 )
 
-using StaticArraysCore
-# Create a straic vector 
-
-x = SVector{3}
-x = SArray{Tuple{3}, Float64, 1, 3}(1.0, 2.0, 4.0)
-space_index(Val(:Ap), jd)
-
-#@testset "Space Index Differentiability" begin
+@testset "Space Index Differentiability" begin
     SpaceIndices.init()
     dt = DateTime(2020, 6, 19, 9, 30, 0)
     jd = datetime2julian(dt)
-    djd = 0.0
 
-    #backend = _BACKENDS[5]
     for backend in _BACKENDS
         testset_name = "Space Indices " * string(backend[1])
         @testset "$testset_name"  begin
             for index in _INDICES
-                println(index)
                 f_fd, df_fd = value_and_derivative(
-                    (x) -> space_index(Val(index), x),
+                    (x) -> reduce(vcat, space_index(Val(index), x)),
                     AutoFiniteDiff(),
                     jd
                 )
 
                 f_ad, df_ad = value_and_derivative(
-                    (x) -> space_index(Val(index), x),
+                    (x) -> reduce(vcat, space_index(Val(index), x)),
                     backend[2],
                     jd
                 )
@@ -82,6 +40,73 @@ space_index(Val(:Ap), jd)
                 else
                     @test df_ad ≈ 624.0 rtol=1e-8
                 end
+            end
+        end
+    end
+
+    ##########################################################
+    # Diffractor is separated as the tangent of a constant function is
+    # defined by NoTangent() instead of 0.0. This behavior is expected
+    # it should not affect downstream derivative computations as in
+    # SatelliteToolboxAtmospheric.jl.
+    ##########################################################
+    @testset "Space Indcies Diffractor"  begin
+        for index in _INDICES
+            f_fd, df_fd = value_and_derivative(
+                (x) -> reduce(vcat, space_index(Val(index), x)),
+                AutoFiniteDiff(),
+                jd
+            )
+
+            f_ad, df_ad = value_and_derivative(
+                (x) -> reduce(vcat, space_index(Val(index), x)),
+                AutoDiffractor(),
+                jd
+            )
+
+            @test f_fd == f_ad
+
+            if df_ad isa Diffractor.NoTangent
+                @test all(df_fd .≈ 0.0)
+            else  
+                if index != :DTC
+                    @test df_fd ≈ df_ad rtol=1e-4
+                else
+                    @test df_ad ≈ 624.0 rtol=1e-8
+                end
+            end
+        end
+    end
+
+    ##########################################################
+    # Zygote is separated as the tangent of a constant function is
+    # defined by "nothing" instead of 0.0. This behavior is expected
+    # it should not affect downstream derivative computations as in
+    # SatelliteToolboxAtmospheric.jl. 
+    # See https://github.com/JuliaDiff/DifferentiationInterface.jl/pull/604
+    ##########################################################
+    @testset "Space Indcies Zygote"  begin
+        for index in _INDICES
+            f_fd, df_fd = value_and_derivative(
+                (x) -> reduce(vcat, space_index(Val(index), x)),
+                AutoFiniteDiff(),
+                jd
+            )
+            try
+                f_ad, df_ad = value_and_derivative(
+                    (x) -> reduce(vcat, space_index(Val(index), x)),
+                    AutoZygote(),
+                    jd
+                )
+                @test f_fd == f_ad
+                if index != :DTC
+                    @test df_fd ≈ df_ad rtol=1e-4
+                else
+                    @test df_ad ≈ 624.0 rtol=1e-8
+                end
+            catch err
+                @test err isa MethodError
+                @test startswith(sprint(showerror, err), "MethodError: no method matching iterate(::Nothing)")
             end
         end
     end

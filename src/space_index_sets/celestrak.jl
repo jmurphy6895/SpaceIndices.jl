@@ -18,8 +18,8 @@ struct Celestrak <: SpaceIndexSet
     vjd::Vector{Float64}
     vBSRN::Vector{Float64}
     vND::Vector{Float64}
-    vkp::Vector{SVector{8, Float64}}
-    vap::Vector{SVector{8, Float64}}
+    vkp::Vector{NTuple{8, Float64}}
+    vap::Vector{NTuple{8, Float64}}
     vCp::Vector{Float64}
     vC9::Vector{Float64}
     vISN::Vector{Float64}
@@ -46,8 +46,8 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
     vjd = Float64[]
     vBSRN = Float64[]
     vND = Float64[]
-    vkp = SVector{8, Float64}[]
-    vap = SVector{8, Float64}[]
+    vkp = NTuple{8, Float64}[]
+    vap = NTuple{8, Float64}[]
     vCp = Float64[]
     vC9 = Float64[]
     vISN = Float64[]
@@ -103,8 +103,8 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         try
             BSRN_k                  = trunc(file[i, 2])
             ND_k                    = trunc(file[i, 3])
-            kp_k                    = _round_Kp.(SVector{8}(float(file[i, j]) for j in 4:11))
-            ap_k                    = SVector{8}(trunc(file[i, j]) for j in 13:20)
+            kp_k                    = _round_Kp.(NTuple{8}(float(file[i, j]) for j in 4:11))
+            ap_k                    = NTuple{8}(trunc(file[i, j]) for j in 13:20)
             Cp_k                    = float(file[i, 22])
             C9_k                    = float(file[i, 23])
             ISN_k                   = trunc(file[i, 24])
@@ -137,8 +137,6 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
             @debug "The line $i in the file $(filepaths |> first |> basename) could not be parsed."
         end
     end
-
-    println(vkp)
 
     return Celestrak(
         vjd,
@@ -194,7 +192,6 @@ function space_index(::Val{:Kp}, jd::Number)
     obj    = @object(Celestrak)
     knots  = obj.vjd
     values = obj.vkp
-    
     return constant_interpolation(knots, values, jd)
 end
 

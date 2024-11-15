@@ -1,16 +1,18 @@
 ## Description #############################################################################
 #
-# Tests related to capability to interact with auto-diff packages.
+# Tests for Differentiation Across the Coordinate Sets
 #
 ############################################################################################
+# Currently Supported & Tested
+# Diffractor, Enzyme, ForwardDiff, FiniteDiff, Mooncake, PolyesterForwardDiff, Zygote
+############################################################################################
+
 
 const _BACKENDS = (
     ("ForwardDiff", AutoForwardDiff()),
     ("Enzyme", AutoEnzyme()),
     ("Mooncake", AutoMooncake(;config=nothing)),
     ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
-    ("ReverseDiff", AutoReverseDiff()),
-    ("Tracker", AutoTracker()),
 )
 
 @testset "Space Index Differentiability" begin

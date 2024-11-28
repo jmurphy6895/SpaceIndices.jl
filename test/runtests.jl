@@ -7,7 +7,7 @@ using Scratch
 using SpaceIndices
 
 using DifferentiationInterface
-using FiniteDiff, ForwardDiff, Diffractor, Enzyme, Mooncake, PolyesterForwardDiff, ReverseDiff, Tracker, Zygote
+using FiniteDiff, ForwardDiff, Diffractor, Enzyme, Mooncake, PolyesterForwardDiff, Zygote
 
 using JET, AllocCheck
 

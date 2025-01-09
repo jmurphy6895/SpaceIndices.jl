@@ -9,7 +9,9 @@ using SpaceIndices
 using DifferentiationInterface
 using FiniteDiff, ForwardDiff, Diffractor, Enzyme, Mooncake, PolyesterForwardDiff, Zygote
 
-using JET, AllocCheck
+using AllocCheck
+using Aqua
+using JET
 
 const _INDICES = [
     :F10obs
@@ -53,7 +55,7 @@ end
 end
 
 @testset "Performance" verbose = true begin
-    include("./allocations.jl")
+    include("./performance.jl")
 end
 
 @testset "Automatic Differentiation" verbose = true begin

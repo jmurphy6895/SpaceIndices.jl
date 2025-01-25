@@ -107,8 +107,9 @@ const _BACKENDS = (
                     @test df_ad ≈ 624.0 rtol=1e-8
                 end
             catch err
-                @test err isa MethodError
-                @test startswith(sprint(showerror, err), "MethodError: no method matching iterate(::Nothing)")
+                @test err isa Exception
+                @test startswith(sprint(showerror, err), "Zygote failed to differentiate function")
+                @test endswith(sprint(showerror, err), "(the pullback returned `nothing`).")
             end
         end
     end

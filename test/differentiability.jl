@@ -4,16 +4,8 @@
 #
 ############################################################################################
 # Currently Supported & Tested
-# Diffractor, Enzyme, ForwardDiff, FiniteDiff, Mooncake, PolyesterForwardDiff, Zygote
+# Enzyme, ForwardDiff, FiniteDiff, Mooncake, PolyesterForwardDiff, Zygote
 ############################################################################################
-
-
-const _BACKENDS = (
-    ("ForwardDiff", AutoForwardDiff()),
-    ("Enzyme", AutoEnzyme()),
-    ("Mooncake", AutoMooncake(;config=nothing)),
-    ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
-)
 
 @testset "Space Index Differentiability" begin
     SpaceIndices.init()

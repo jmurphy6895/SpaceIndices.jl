@@ -7,7 +7,24 @@ using Scratch
 using SpaceIndices
 
 using DifferentiationInterface
-using FiniteDiff, ForwardDiff, Diffractor, Enzyme, Mooncake, PolyesterForwardDiff, Zygote
+using FiniteDiff, ForwardDiff, Diffractor, Enzyme, PolyesterForwardDiff, Zygote
+
+if isempty(VERSION.prerelease)
+    using Mooncake
+    const _BACKENDS = (
+        ("ForwardDiff", AutoForwardDiff()),
+        ("Enzyme", AutoEnzyme()),
+        ("Mooncake", AutoMooncake(;config=nothing)),
+        ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
+    )
+else
+    @warn "Mooncake.jl not guaranteed to work on julia-nightly, skipping tests"
+    const _BACKENDS = (
+        ("ForwardDiff", AutoForwardDiff()),
+        ("Enzyme", AutoEnzyme()),
+        ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
+    )
+end
 
 using AllocCheck
 using Aqua

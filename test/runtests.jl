@@ -9,6 +9,33 @@ using SpaceIndices
 using DifferentiationInterface
 using FiniteDiff, ForwardDiff, PolyesterForwardDiff, Zygote
 
+using Aqua
+
+const _INDICES = [
+    :F10obs
+    :F10obs_avg_center81
+    :F10obs_avg_last81
+    :F10adj
+    :F10adj_avg_center81
+    :F10adj_avg_last81
+    :Ap
+    :Ap_daily
+    :Kp
+    :Kp_daily
+    :Cp
+    :C9
+    :ISN
+    :BSRN
+    :ND
+    :DTC
+    :S10
+    :M10
+    :Y10
+    :S81a
+    :M81a
+    :Y81a
+]
+
 if isempty(VERSION.prerelease)
     # Add Mooncake and Enzyme to the project if not the nightly version
     # Adding them via the Project.toml isn't working because it tries to compile them before reaching the gating
@@ -43,33 +70,6 @@ else
     @warn "JET and AllocCheck not guaranteed to work on julia-nightly, skipping tests"
 
 end
-
-using Aqua
-
-const _INDICES = [
-    :F10obs
-    :F10obs_avg_center81
-    :F10obs_avg_last81
-    :F10adj
-    :F10adj_avg_center81
-    :F10adj_avg_last81
-    :Ap
-    :Ap_daily
-    :Kp
-    :Kp_daily
-    :Cp
-    :C9
-    :ISN
-    :BSRN
-    :ND
-    :DTC
-    :S10
-    :M10
-    :Y10
-    :S81a
-    :M81a
-    :Y81a
-]
 
 @testset "Initilization" verbose = true begin
     include("./initialization.jl")

@@ -6,11 +6,6 @@ using Logging
 using Scratch
 using SpaceIndices
 
-using DifferentiationInterface
-using FiniteDiff, ForwardDiff, PolyesterForwardDiff, Zygote
-
-using Aqua
-
 const _INDICES = [
     :F10obs
     :F10obs_avg_center81
@@ -40,13 +35,21 @@ if isempty(VERSION.prerelease)
     # Add Mooncake and Enzyme to the project if not the nightly version
     # Adding them via the Project.toml isn't working because it tries to compile them before reaching the gating
     using Pkg
-    Pkg.add("Mooncake")
+    Pkg.add("DifferentiationInterface")
     Pkg.add("Enzyme")
+    Pkg.add("FiniteDiff")
+    Pkg.add("ForwardDiff")
+    Pkg.add("Mooncake")
+    Pkg.add("PolyesterForwardDiff")
+    Pkg.add("Zygote")
+
+    Pkg.add("Aqua")
     Pkg.add("JET")
     Pkg.add("AllocCheck")
 
     # Test with Mooncake and Enzyme along with the other backends
-    using Mooncake, Enzyme
+    using DifferentiationInterface
+    using Enzyme, FiniteDiff, ForwardDiff, Mooncake, PolyesterForwardDiff, Zygote
     const _BACKENDS = (
         ("ForwardDiff", AutoForwardDiff()),
         ("Enzyme", AutoEnzyme()),
@@ -54,6 +57,11 @@ if isempty(VERSION.prerelease)
         ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
     )
 
+    @testset "Automatic Differentiation" verbose = true begin
+        include("./differentiability.jl")
+    end
+
+    using Aqua
     using JET
     using AllocCheck
 
@@ -61,13 +69,8 @@ if isempty(VERSION.prerelease)
         include("./performance.jl")
     end
 else
-    @warn "Mooncake.jl not guaranteed to work on julia-nightly, skipping tests"
-    const _BACKENDS = (
-        ("ForwardDiff", AutoForwardDiff()),
-        ("PolyesterForwardDiff", AutoPolyesterForwardDiff()),
-    )
-
-    @warn "JET and AllocCheck not guaranteed to work on julia-nightly, skipping tests"
+    @warn "Differentiation backends not guaranteed to work on julia-nightly, skipping tests"
+    @warn "Performance tests not guaranteed to work on julia-nightly, skipping tests"
 
 end
 
@@ -87,10 +90,5 @@ end
     include("./interpolations.jl")
 end
 
-@testset "Automatic Differentiation" verbose = true begin
-    include("./differentiability.jl")
-end
 
-@testset "Aqua.jl" begin
-    Aqua.test_all(SpaceIndices; ambiguities=(recursive = false), deps_compat=(check_extras = false))
-end
+

@@ -3,6 +3,10 @@
 # Tests related to performance and memory allocations.
 #
 ############################################################################################
+@testset "Aqua.jl" begin
+    Aqua.test_all(SpaceIndices; ambiguities=(recursive = false), deps_compat=(check_extras = false))
+end
+
 @testset "JET Testing" begin
     rep = JET.test_package(SpaceIndices; toplevel_logger=nothing, target_modules=(@__MODULE__,))
 end

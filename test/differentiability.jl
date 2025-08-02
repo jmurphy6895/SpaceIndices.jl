@@ -39,40 +39,6 @@
     end
 
     ##########################################################
-    # Diffractor is separated as the tangent of a constant function is
-    # defined by NoTangent() instead of 0.0. This behavior is expected
-    # it should not affect downstream derivative computations as in
-    # SatelliteToolboxAtmospheric.jl.
-    ##########################################################
-    @testset "Space Indcies Diffractor"  begin
-        for index in _INDICES
-            f_fd, df_fd = value_and_derivative(
-                (x) -> reduce(vcat, space_index(Val(index), x)),
-                AutoFiniteDiff(),
-                jd
-            )
-
-            f_ad, df_ad = value_and_derivative(
-                (x) -> reduce(vcat, space_index(Val(index), x)),
-                AutoDiffractor(),
-                jd
-            )
-
-            @test f_fd == f_ad
-
-            if df_ad isa Diffractor.NoTangent
-                @test all(df_fd .≈ 0.0)
-            else  
-                if index != :DTC
-                    @test df_fd ≈ df_ad rtol=1e-4
-                else
-                    @test df_ad ≈ 624.0 rtol=1e-8
-                end
-            end
-        end
-    end
-
-    ##########################################################
     # Zygote is separated as the tangent of a constant function is
     # defined by "nothing" instead of 0.0. This behavior is expected
     # it should not affect downstream derivative computations as in

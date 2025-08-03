@@ -32,9 +32,12 @@ const _INDICES = [
 ]
 
 if isempty(VERSION.prerelease)
-    # Add Mooncake and Enzyme to the project if not the nightly version
-    # Adding them via the Project.toml isn't working because it tries to compile them before reaching the gating
+    # Add Mooncake and Enzyme to the project if not the nightly version. Adding them via the
+    # Project.toml isn't working because it tries to compile them before reaching the
+    # gating.
+
     using Pkg
+
     Pkg.add("DifferentiationInterface")
     Pkg.add("Enzyme")
     Pkg.add("FiniteDiff")
@@ -71,7 +74,6 @@ if isempty(VERSION.prerelease)
 else
     @warn "Differentiation backends not guaranteed to work on julia-nightly, skipping tests"
     @warn "Performance tests not guaranteed to work on julia-nightly, skipping tests"
-
 end
 
 @testset "Initilization" verbose = true begin
@@ -89,6 +91,3 @@ end
 @testset "Interpolations" verbose = true begin
     include("./interpolations.jl")
 end
-
-
-

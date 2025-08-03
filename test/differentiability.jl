@@ -1,10 +1,11 @@
 ## Description #############################################################################
 #
-# Tests for Differentiation Across the Coordinate Sets
+# Tests for differentiation across the coordinate sets.
 #
-############################################################################################
-# Currently Supported & Tested
-# Enzyme, ForwardDiff, FiniteDiff, Mooncake, PolyesterForwardDiff, Zygote
+# Currently Supported & Tested:
+#
+#   Enzyme, ForwardDiff, FiniteDiff, Mooncake, PolyesterForwardDiff, Zygote
+#
 ############################################################################################
 
 @testset "Space Index Differentiability" begin
@@ -38,13 +39,12 @@
         end
     end
 
-    ##########################################################
-    # Zygote is separated as the tangent of a constant function is
-    # defined by "nothing" instead of 0.0. This behavior is expected
-    # it should not affect downstream derivative computations as in
-    # SatelliteToolboxAtmospheric.jl. 
+    # Zygote is separated as the tangent of a constant function is defined by "nothing"
+    # instead of 0.0. This behavior is expected it should not affect downstream derivative
+    # computations as in SatelliteToolboxAtmospheric.jl.
+    #
     # See https://github.com/JuliaDiff/DifferentiationInterface.jl/pull/604
-    ##########################################################
+
     @testset "Space Indcies Zygote"  begin
         for index in _INDICES
             f_fd, df_fd = value_and_derivative(

@@ -1,6 +1,15 @@
 SpaceIndices.jl Changelog
 =========================
 
+Version 2.0.0
+-------------
+
+- ![BREAKING][badge-breaking] The types of the indices `BSRN`, `ND`, `kp`, `ap`, `ISN`, and
+  `ap_daily` have changed to support the automatic differentiation. Hence, this is a
+  breaking release.
+- ![Enhancement][badge-enhancement] The package now supports automatic differentiation using
+  many packages. (PR [#7][gh-pr-7])
+
 Version 1.2.2
 -------------
 
@@ -83,3 +92,4 @@ Version 0.1.0
 
 [gh-pr-2]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/2
 [gh-pr-3]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/3
+[gh-pr-7]: https://github.com/JuliaSpace/SpaceIndices.jl/pull/7

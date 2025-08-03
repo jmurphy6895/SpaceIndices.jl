@@ -16,14 +16,14 @@
 
 struct Celestrak <: SpaceIndexSet
     vjd::Vector{Float64}
-    vBSRN::Vector{Int}
-    vND::Vector{Int}
-    vkp::Vector{Vector{Float64}}
-    vap::Vector{Vector{Int}}
+    vBSRN::Vector{Float64}
+    vND::Vector{Float64}
+    vkp::Vector{NTuple{8, Float64}}
+    vap::Vector{NTuple{8, Float64}}
     vCp::Vector{Float64}
     vC9::Vector{Float64}
-    vISN::Vector{Int}
-    vap_daily::Vector{Int}
+    vISN::Vector{Float64}
+    vap_daily::Vector{Float64}
     vf107_obs::Vector{Float64}
     vf107_adj::Vector{Float64}
     vf107_obs_avg_center81::Vector{Float64}
@@ -44,14 +44,14 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
 
     # Allocate raw data.
     vjd = Float64[]
-    vBSRN = Int[]
-    vND = Int[]
-    vkp = Vector{Float64}[]
-    vap = Vector{Int}[]
+    vBSRN = Float64[]
+    vND = Float64[]
+    vkp = NTuple{8, Float64}[]
+    vap = NTuple{8, Float64}[]
     vCp = Float64[]
     vC9 = Float64[]
-    vISN = Int[]
-    vap_daily = Int[]
+    vISN = Float64[]
+    vap_daily = Float64[]
     vf107_obs = Float64[]
     vf107_adj = Float64[]
     vf107_obs_avg_center81 = Float64[]
@@ -103,8 +103,8 @@ function parse_files(::Type{Celestrak}, filepaths::Vector{String})
         try
             BSRN_k                  = trunc(file[i, 2])
             ND_k                    = trunc(file[i, 3])
-            kp_k                    = _round_Kp.([float(file[i, j]) for j in 4:11])
-            ap_k                    = [trunc(file[i, j]) for j in 13:20]
+            kp_k                    = _round_Kp.(NTuple{8}(float(file[i, j]) for j in 4:11))
+            ap_k                    = NTuple{8}(trunc(file[i, j]) for j in 13:20)
             Cp_k                    = float(file[i, 22])
             C9_k                    = float(file[i, 23])
             ISN_k                   = trunc(file[i, 24])

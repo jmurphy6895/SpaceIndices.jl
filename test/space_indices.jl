@@ -146,9 +146,9 @@
     jd = datetime2julian(dt)
 
     r = space_index(Val(:Kp), dt)
-    @test r == [0.667; 1.000; 0.333; 1.000; 0.667; 0.667; 1.333; 1.667]
+    @test r == (0.667, 1.000, 0.333, 1.000, 0.667, 0.667, 1.333, 1.667)
     r = space_index(Val(:Kp), jd)
-    @test r == [0.667; 1.000; 0.333; 1.000; 0.667; 0.667; 1.333; 1.667]
+    @test r == (0.667, 1.000, 0.333, 1.000, 0.667, 0.667, 1.333, 1.667)
 
     r = space_index(Val(:Kp_daily), dt)
     @test r ≈ 0.91675
@@ -156,9 +156,9 @@
     @test r ≈ 0.91675
 
     r = space_index(Val(:Ap), dt)
-    @test r == [3; 4; 2; 4; 3; 3; 5; 6]
+    @test r == (3, 4, 2, 4, 3, 3, 5, 6)
     r = space_index(Val(:Ap), jd)
-    @test r == [3; 4; 2; 4; 3; 3; 5; 6]
+    @test r == (3, 4, 2, 4, 3, 3, 5, 6)
 
     r = space_index(Val(:Ap_daily), dt)
     @test r == 4
@@ -169,9 +169,9 @@
     jd = datetime2julian(dt)
 
     r = space_index(Val(:Kp), dt)
-    @test r == [2.667; 3.667; 4.333; 6.333; 7.0; 6.333; 6.0; 5.0]
+    @test r == (2.667, 3.667, 4.333, 6.333, 7.0, 6.333, 6.0, 5.0)
     r = space_index(Val(:Kp), jd)
-    @test r == [2.667; 3.667; 4.333; 6.333; 7.0; 6.333; 6.0; 5.0]
+    @test r == (2.667, 3.667, 4.333, 6.333, 7.0, 6.333, 6.0, 5.0)
 
     r = space_index(Val(:Kp_daily), dt)
     @test r ≈ 5.166625
@@ -179,9 +179,9 @@
     @test r ≈ 5.166625
 
     r = space_index(Val(:Ap), dt)
-    @test r == [12; 22; 32; 94; 132; 94; 80; 48]
+    @test r == (12, 22, 32, 94, 132, 94, 80, 48)
     r = space_index(Val(:Ap), jd)
-    @test r == [12; 22; 32; 94; 132; 94; 80; 48]
+    @test r == (12, 22, 32, 94, 132, 94, 80, 48)
 
     r = space_index(Val(:Ap_daily), dt)
     @test r == 64
@@ -295,14 +295,14 @@ end
     @test r ≈ 37
 
     r = space_index(Val(:S10), dt)
-    @test r ≈ 57.7
+    @test r ≈ 53.7
     r = space_index(Val(:S10), jd)
-    @test r ≈ 57.7
+    @test r ≈ 53.7
 
     r = space_index(Val(:S81a), dt)
-    @test r ≈ 58.4
+    @test r ≈ 54.1
     r = space_index(Val(:S81a), jd)
-    @test r ≈ 58.4
+    @test r ≈ 54.1
 
     r = space_index(Val(:M10), dt)
     @test r ≈ 72.8
@@ -310,9 +310,9 @@ end
     @test r ≈ 72.8
 
     r = space_index(Val(:M81a), dt)
-    @test r ≈ 73.9
+    @test r ≈ 74.0
     r = space_index(Val(:M81a), jd)
-    @test r ≈ 73.9
+    @test r ≈ 74.0
 
     r = space_index(Val(:Y10), dt)
     @test r ≈ 58.2

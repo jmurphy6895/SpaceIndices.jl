@@ -13,7 +13,7 @@
 Perform a constant interpolation at `x` of `values` evaluated at `knots`. The interpolation
 returns `value(knots[k-1])` in which `knots[k-1] <= x < knots[k]`.
 """
-function constant_interpolation(knots::AbstractVector, values::AbstractVector, x)
+function constant_interpolation(knots::AbstractVector, values::AbstractVector, x::Number)
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)
@@ -42,7 +42,7 @@ end
 
 Perform a linear interpolation at `x` of `values` evaluated at `knots`.
 """
-function linear_interpolation(knots::AbstractVector, values::AbstractVector, x)
+function linear_interpolation(knots::AbstractVector, values::AbstractVector, x::Number)
     # First, we need to verify if `x` is inside the domain.
     knots_beg = first(knots)
     knots_end = last(knots)
@@ -89,7 +89,7 @@ end
 
 # Perform a interval binary search of `x` in `v`. It means that this function returns `k`
 # such that `v[k] <= x < v[k + 1]`.
-function _binary_search(v::AbstractVector, x)
+function _binary_search(v::AbstractVector, x::Number)
     num_elements = length(v)
     low  = 1
     high = num_elements

@@ -17,22 +17,16 @@ Scratch = "6c6a2e73-6563-6170-7368-637461726353"
 Dates = "1.6"
 DelimitedFiles = "1.6"
 Downloads = "1"
-ForwardDiff = "0.10"
-Logging = "1.6"
 OptionalData = "1"
 Reexport = "1"
-ReverseDiff = "1"
 Scratch = "1"
 Test = "1.6"
-Zygote = "0.6"
-julia = "1.6"
+julia = "1.10, 1.11"
 
 [extras]
-ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
-ReverseDiff = "37e2e3b7-166d-5795-8a7a-e32c996b4267"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [targets]
-test = ["Test", "Logging", "ForwardDiff", "ReverseDiff", "Zygote"]
+test = ["Test", "Logging", "Pkg"]

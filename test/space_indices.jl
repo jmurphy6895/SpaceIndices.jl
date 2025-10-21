@@ -351,3 +351,65 @@ end
     @test_throws ArgumentError space_index(Val(:Y81a), dt)
     @test_throws ArgumentError space_index(Val(:Y81a), jd)
 end
+
+@testset "Hpo" begin
+    SpaceIndices.init(SpaceIndices.Hpo)
+
+    # Test Hp30 and ap30 indices
+    # Using a date that should be in the historical data
+    dt = DateTime(2020, 6, 10, 0, 0, 0)
+    jd = datetime2julian(dt)
+
+    r = space_index(Val(:Hp30), dt)
+    @test r isa NTuple{48, Float64}
+    expected_hpo30 = (1.667, 2.0, 2.0, 1.667, 2.0, 2.0, 2.0, 2.333, 2.667, 2.0)
+    @test r[1:10] == expected_hpo30
+    r_jd = space_index(Val(:Hp30), jd)
+    @test r_jd == r
+
+    r = space_index(Val(:Ap30), dt)
+    @test r isa NTuple{48, Float64}
+    expected_ap30 = (6, 7, 7, 6, 7, 7, 7, 9, 12, 7)
+    @test r[1:10] == expected_ap30
+    r_jd = space_index(Val(:Ap30), jd)
+    @test r_jd == r
+
+    # Test Hp60 and ap60 indices
+    r = space_index(Val(:Hp60), dt)
+    expected_hpo60 = (1.667, 1.667, 2.0, 2.333, 2.333, 2.667, 2.667, 2.333, 2.333, 3.333, 1.667, 1.667, 1.333, 1.0, 1.0, 1.333, .667, 1.0, 1.667, .667, .667, 1.333, .667, 2.0)
+    @test r isa NTuple{24, Float64}
+    @test r == expected_hpo60
+    r_jd = space_index(Val(:Hp60), jd)
+    @test r_jd == r
+
+    r = space_index(Val(:Ap60), dt)
+    @test r isa NTuple{24, Float64}
+    expected_ap60 = (6, 6, 7, 9, 9, 12, 12, 9, 9, 18, 6, 6, 5, 4, 4, 5, 3, 4, 6, 3, 3, 5, 3, 7)
+    @test all(x -> x >= 0.0 || isnan(x), r)
+    r_jd = space_index(Val(:Ap60), jd)
+    @test r_jd == r
+
+    SpaceIndices.destroy()
+end
+
+@testset "Hpo [ERRORS]" begin
+    SpaceIndices.init(SpaceIndices.Hpo)
+
+    # Test with a date before the data starts (before 1985)
+    dt = DateTime(1984, 12, 31)
+    jd = datetime2julian(dt)
+
+    @test_throws ArgumentError space_index(Val(:Hp30), dt)
+    @test_throws ArgumentError space_index(Val(:Hp30), jd)
+
+    @test_throws ArgumentError space_index(Val(:Ap30), dt)
+    @test_throws ArgumentError space_index(Val(:Ap30), jd)
+
+    @test_throws ArgumentError space_index(Val(:Hp60), dt)
+    @test_throws ArgumentError space_index(Val(:Hp60), jd)
+
+    @test_throws ArgumentError space_index(Val(:Ap60), dt)
+    @test_throws ArgumentError space_index(Val(:Ap60), jd)
+
+    SpaceIndices.destroy()
+end

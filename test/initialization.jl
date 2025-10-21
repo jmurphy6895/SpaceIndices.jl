@@ -11,6 +11,7 @@
     # Test if the structures were initialized.
     @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_CELESTRAK.data isa SpaceIndices.Celestrak
+    @test SpaceIndices._OPDATA_HPO.data       isa SpaceIndices.Hpo
 
     # Destroy everything to test the individual initialization.
     SpaceIndices.destroy()
@@ -18,11 +19,19 @@
     SpaceIndices.init(SpaceIndices.JB2008)
     @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_CELESTRAK.data isa Nothing
+    @test SpaceIndices._OPDATA_HPO.data       isa Nothing
     SpaceIndices.destroy()
 
     SpaceIndices.init(SpaceIndices.Celestrak)
     @test SpaceIndices._OPDATA_JB2008.data    isa Nothing
     @test SpaceIndices._OPDATA_CELESTRAK.data isa SpaceIndices.Celestrak
+    @test SpaceIndices._OPDATA_HPO.data       isa Nothing
+    SpaceIndices.destroy()
+
+    SpaceIndices.init(SpaceIndices.Hpo)
+    @test SpaceIndices._OPDATA_JB2008.data    isa Nothing
+    @test SpaceIndices._OPDATA_CELESTRAK.data isa Nothing
+    @test SpaceIndices._OPDATA_HPO.data       isa SpaceIndices.Hpo
     SpaceIndices.destroy()
 
     # == Blocklist =========================================================================
@@ -30,6 +39,13 @@
     SpaceIndices.init(; blocklist = [SpaceIndices.Celestrak])
     @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
     @test SpaceIndices._OPDATA_CELESTRAK.data isa Nothing
+    @test SpaceIndices._OPDATA_HPO.data       isa SpaceIndices.Hpo
+    SpaceIndices.destroy()
+
+    SpaceIndices.init(; blocklist = [SpaceIndices.Hpo])
+    @test SpaceIndices._OPDATA_JB2008.data    isa SpaceIndices.JB2008
+    @test SpaceIndices._OPDATA_CELESTRAK.data isa SpaceIndices.Celestrak
+    @test SpaceIndices._OPDATA_HPO.data       isa Nothing
     SpaceIndices.destroy()
 
 end
@@ -83,6 +99,11 @@ end
     @test_throws Exception space_index(Val(:M81a), dt)
     @test_throws Exception space_index(Val(:Y10),  dt)
     @test_throws Exception space_index(Val(:Y81a), dt)
+
+    @test_throws Exception space_index(Val(:Hp30), dt)
+    @test_throws Exception space_index(Val(:Ap30), dt)
+    @test_throws Exception space_index(Val(:Hp60), dt)
+    @test_throws Exception space_index(Val(:Ap60), dt)
 end
 
 @testset "Errors Related To Space Index Set Initialization" begin

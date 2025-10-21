@@ -55,3 +55,7 @@ The following space indices are currently supported:
 |                     | `S81a`                | 81-day averaged EUV index (26-34 nm) scaled to F10.7               | 10⁻²² W / (M² ⋅ Hz) |
 |                     | `M81a`                | 81-day averaged MG2 index scaled to F10.7                          | 10⁻²² W / (M² ⋅ Hz) |
 |                     | `Y81a`                | 81-day averaged solar X-ray & Lya index scaled to F10.7            | 10⁻²² W / (M² ⋅ Hz) |
+| `Hpo`               | `Hp30`                | Geomagnetic index with 30-minute resolution                        |                     |
+|                     | `ap30`                | Linear geomagnetic activity index (30-minute)                      |                     |
+|                     | `Hp60`                | Geomagnetic index with 60-minute resolution                        |                     |
+|                     | `ap60`                | Linear geomagnetic activity index (60-minute)                      |                     |

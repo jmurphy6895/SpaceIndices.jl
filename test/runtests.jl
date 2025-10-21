@@ -29,6 +29,10 @@ const _INDICES = [
     :S81a
     :M81a
     :Y81a
+    :Hp30
+    :Hp60
+    :Ap30
+    :Ap60
 ]
 
 if isempty(VERSION.prerelease)

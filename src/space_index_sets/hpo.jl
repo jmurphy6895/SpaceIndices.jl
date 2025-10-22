@@ -25,6 +25,23 @@
 #                                        Structure                                         #
 ############################################################################################
 
+# Exact mapping from Hp to ap values
+const HP_VALUES = [
+    0.000, 0.333, 0.667, 1.000, 1.333, 1.667, 2.000, 2.333, 2.667,
+    3.000, 3.333, 3.667, 4.000, 4.333, 4.667, 5.000, 5.333, 5.667,
+    6.000, 6.333, 6.667, 7.000, 7.333, 7.667, 8.000, 8.333, 8.667,
+    9.000, 9.333, 9.667, 10.000, 10.333, 10.667, 11.000, 11.333,
+    11.667, 12.000, 12.667, 13.333
+]
+
+const AP_VALUES = [
+    0, 2, 3, 4, 5, 6, 7, 9, 12,
+    15, 18, 22, 27, 32, 39, 48, 56, 67,
+    80, 94, 111, 132, 154, 179, 207, 236, 265,
+    294, 324, 355, 388, 421, 456, 494, 534,
+    574, 617, 705, 801
+]
+
 struct Hpo <: SpaceIndexSet
     vjd::Vector{Float64}
     vhp30::Vector{NTuple{48, Float64}}
@@ -251,39 +268,22 @@ function _hp_to_ap(hp::Float64)
     # Reference: Yamazaki & Matzka (2022), GRL
     # Data source: https://kp.gfz.de/app/files/Hp30_ap30_complete_series.txt
 
-    # Exact mapping from Hp to ap values
-    hp_values = [
-        0.000, 0.333, 0.667, 1.000, 1.333, 1.667, 2.000, 2.333, 2.667,
-        3.000, 3.333, 3.667, 4.000, 4.333, 4.667, 5.000, 5.333, 5.667,
-        6.000, 6.333, 6.667, 7.000, 7.333, 7.667, 8.000, 8.333, 8.667,
-        9.000, 9.333, 9.667, 10.000, 10.333, 10.667, 11.000, 11.333,
-        11.667, 12.000, 12.667, 13.333
-    ]
-
-    ap_values = [
-        0, 2, 3, 4, 5, 6, 7, 9, 12,
-        15, 18, 22, 27, 32, 39, 48, 56, 67,
-        80, 94, 111, 132, 154, 179, 207, 236, 265,
-        294, 324, 355, 388, 421, 456, 494, 534,
-        574, 617, 705, 801
-    ]
-
     isnan(hp) && return NaN
 
     # Round hp to nearest 1/3 to match the discrete values
     hp_rounded = round(hp * 3) / 3
 
     # Find exact match in the table
-    for i in 1:length(hp_values)
-        if abs(hp_rounded - hp_values[i]) < 0.01  # Small tolerance for floating point comparison
-            return Float64(ap_values[i])
+    for i in 1:length(HP_VALUES)
+        if abs(hp_rounded - HP_VALUES[i]) < 0.01  # Small tolerance for floating point comparison
+            return Float64(AP_VALUES[i])
         end
     end
 
     # If no exact match, find the nearest lower value
-    for i in length(hp_values):-1:1
-        if hp_rounded >= hp_values[i]
-            return Float64(ap_values[i])
+    for i in length(HP_VALUES):-1:1
+        if hp_rounded >= HP_VALUES[i]
+            return Float64(AP_VALUES[i])
         end
     end
 

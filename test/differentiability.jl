@@ -69,6 +69,9 @@
                 @test startswith(
                     sprint(showerror, err),
                     "MethodError: no method matching iterate(::Nothing)",
+                ) || startswith(
+                    sprint(showerror, err),
+                    "MethodError: reducing over an empty collection is not allowed; consider supplying `init` to the reducer",
                 )
             end
         end

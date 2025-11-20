@@ -8,7 +8,7 @@
 end
 
 @testset "JET Testing" begin
-    rep = JET.test_package(SpaceIndices; toplevel_logger=nothing, target_modules=(@__MODULE__,))
+    rep = JET.test_package(SpaceIndices; toplevel_logger=nothing, target_modules=(SpaceIndices,))
 end
 
 @testset "Allocations Check" begin

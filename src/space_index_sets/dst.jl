@@ -850,6 +850,11 @@ function _detect_dst_storms(vdst::Vector{Float64})
     storms = _DstStormEvent[]
 
     i = 1
+    # Track the most recent storm's end_idx so the next storm's backward scan in
+    # _find_storm_start cannot cross into the previous storm's window. 0 = no prior
+    # storm (start of series). Matches Fortran DSTSTM passing TSTART = TEND of the
+    # previous storm to DSTMAX (DTCMAKEDR_AUTO.f lines 582–585, 603–605).
+    prev_end_idx = 0
     while i <= n
         # Look for the first point below the storm threshold.
         if vdst[i] >= _DTC_STORM_THRESHOLD
@@ -861,7 +866,12 @@ function _detect_dst_storms(vdst::Vector{Float64})
 
         # Find the storm commencement (Dst maximum) by scanning backward. This is
         # used for the slope calculation and integration start, not for minimum search.
-        start_idx, dst_max = _find_storm_start(vdst, i)
+        # The backward scan is bounded by `prev_end_idx + 1` so that a long-recovery
+        # storm which re-dips below -75 nT during late recovery cannot re-discover the
+        # previous storm's SSC and produce overlapping storm windows.
+        start_idx, dst_max = _find_storm_start(
+            vdst, i; min_idx_bound = prev_end_idx + 1
+        )
 
         # Find the Dst minimum (main phase end). Search from the TRIGGER index `i`,
         # not from start_idx, matching Fortran DSTMIN which starts from TSTART (the
@@ -888,26 +898,55 @@ function _detect_dst_storms(vdst::Vector{Float64})
         ))
 
         # Resume scanning after this storm (end_idx ≥ min_idx ≥ i, so i always advances).
+        prev_end_idx = end_idx
         i = end_idx + 1
+    end
+
+    # Post-condition: storm windows must be strictly non-overlapping. Overlap would
+    # corrupt _integrate_storm_dtc! by re-integrating across an already-resolved range
+    # with a different slope, lag, and initial condition (the chaining branch in
+    # _compute_dtc_from_dst would silently mask the bug with inflated peaks). Fail
+    # loudly if anything upstream regresses.
+    for s in 2:length(storms)
+        prev = storms[s - 1]
+        curr = storms[s]
+        if curr.start_idx <= prev.end_idx
+            error(
+                "Internal invariant violated in _detect_dst_storms: overlapping " *
+                "storm windows (storm $(s - 1): [$(prev.start_idx), $(prev.end_idx)], " *
+                "storm $s: [$(curr.start_idx), $(curr.end_idx)])."
+            )
+        end
     end
 
     return storms
 end
 
 """
-    _find_storm_start(vdst, trigger_idx) -> (start_idx, dst_max)
+    _find_storm_start(vdst, trigger_idx; min_idx_bound=1) -> (start_idx, dst_max)
 
 Scan backward from the storm trigger (first Dst < -75) to find the Dst maximum (storm
 commencement point). Based on DSTMAX from DTCMAKEDR.
 
+The backward scan is bounded by `min_idx_bound` (default = 1, i.e. start of series).
+For the second and later storms in `_detect_dst_storms`, this MUST be set to the
+previous storm's `end_idx + 1` so consecutive storm windows cannot share a `start_idx`.
+This matches the Fortran DSTMAX `TBEG` argument: DSTSTM passes `TSTART = TEND` of the
+previous storm so the backward scan stops at the previous storm boundary
+(DTCMAKEDR_AUTO.f lines 582–585, 603–605).
+
 Stops when 6 consecutive points ≥ -40 nT are found (quiet pre-storm period).
 """
-function _find_storm_start(vdst::Vector{Float64}, trigger_idx::Int)
+function _find_storm_start(
+    vdst::Vector{Float64},
+    trigger_idx::Int;
+    min_idx_bound::Int = 1,
+)
     max_val = vdst[trigger_idx]
     max_idx = trigger_idx
     quiet_count = 0
 
-    for k in (trigger_idx - 1):-1:max(1, trigger_idx - 72)
+    for k in (trigger_idx - 1):-1:max(min_idx_bound, trigger_idx - 72)
         val = vdst[k]
 
         if val > max_val
